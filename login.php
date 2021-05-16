@@ -68,7 +68,7 @@
 						<div class="col-md-3 col-sm-12 text-right">
 							<ul class="nav-icons">
 								<li><a href="register.html"><i class="ion-person-add"></i><div>Register</div></a></li>
-								<li><a href="login.html"><i class="ion-person"></i><div>Login</div></a></li>
+								<li><a href="login.php"><i class="ion-person"></i><div>Login</div></a></li>
 							</ul>
 						</div>
 					</div>
@@ -313,19 +313,19 @@
 					<div class="box box-border">
 						<div class="box-body">
 							<h4>Login</h4>
-							<form>
+							<form class="login-form">
 								<div class="form-group">
 									<label>Username</label>
-									<input type="text" name="username" class="form-control">
+									<input type="text" name="username" class="form-control name">
 								</div>
 								<div class="form-group">
 									<label class="fw">Password
 										<a href="forgot.html" class="pull-right">Forgot Password?</a>
 									</label>
-									<input type="password" name="password" class="form-control">
+									<input type="password" name="password" class="form-control password">
 								</div>
 								<div class="form-group text-right">
-									<button class="btn btn-primary btn-block">Login</button>
+									<button id="login-form" type="button" class="btn btn-primary btn-block">Login</button>
 								</div>
 								<div class="form-group text-center">
 									<span class="text-muted">Don't have an account?</span> <a href="register.html">Create one</a>

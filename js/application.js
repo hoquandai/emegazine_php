@@ -1,0 +1,1 @@
+var api_host = 'http://localhost:3000/api'
