@@ -3,7 +3,7 @@
 function CallAPI($method, $url, $data = false)
 {
     $curl = curl_init();
-    $default_api_host = 'http://localhost:3000';
+    $default_api_host = 'http://localhost:3000/api';
     $url = $default_api_host.$url;
 
     switch ($method)
