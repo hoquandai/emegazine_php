@@ -315,8 +315,8 @@
 							<h4>Login</h4>
 							<form class="login-form">
 								<div class="form-group">
-									<label>Username</label>
-									<input type="text" name="username" class="form-control name">
+									<label>Email</label>
+									<input type="text" name="email" class="form-control email">
 								</div>
 								<div class="form-group">
 									<label class="fw">Password
@@ -325,7 +325,7 @@
 									<input type="password" name="password" class="form-control password">
 								</div>
 								<div class="form-group text-right">
-									<button id="login-form" type="button" class="btn btn-primary btn-block">Login</button>
+									<button id="login-btn" type="button" class="btn btn-primary btn-block">Login</button>
 								</div>
 								<div class="form-group text-center">
 									<span class="text-muted">Don't have an account?</span> <a href="register.html">Create one</a>
@@ -556,5 +556,7 @@
 		<script src="scripts/toast/jquery.toast.min.js"></script>
 		<script src="js/demo.js"></script>
 		<script src="js/e-magz.js"></script>
+		<script src="js/application.js"></script>
+		<script src="js/user.js"></script>
 	</body>
 </html>

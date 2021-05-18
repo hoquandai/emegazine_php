@@ -3,7 +3,7 @@
   require_once("api/call.php");
   $cates = CallAPI('GET', '/categories');
   $latest_questions = json_decode(CallAPI('GET', '/questions/latest'))->data;
-  $username = $_SESSION['user_name'] ? $_SESSION['user_name'] : 'ABC'
+  $username = $_SESSION['user_name'] ? $_SESSION['user_name'] : ''
 ?>
 <!DOCTYPE html>
 <html>
@@ -80,8 +80,20 @@
 						</div>
 						<div class="col-md-3 col-sm-12 text-right">
 							<ul class="nav-icons">
-								<li><a href="register.html"><i class="ion-person-add"></i><div>Register</div></a></li>
-								<li><a href="login.html"><i class="ion-person"></i><div><?php echo $username ?></div></a></li>
+								<?php
+									if ($username == '') {
+								?>
+										<li><a href="register.html"><i class="ion-person-add"></i><div>Register</div></a></li>
+										<li><a href="login.php"><i class="ion-person"></i><div>Login</div></a></li>
+								<?php
+									} else {
+								?>
+										<li><a href="profile.html"><i class="ion-person"></i><div><?php echo $username ?></div></a></li>
+										<li><a href="logout.php"><i class="ion-log-out"></i><div>Logout</div></a></li>
+								<?php
+									}
+								?>
+								
 							</ul>
 						</div>
 					</div>

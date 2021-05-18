@@ -1,18 +1,17 @@
-$('#login-form').on('click', function() {
-  let user_name = $('.login-form #name').value();
-  let user_password = $('.login-form #password').value();
+$('.login-form #login-btn').on('click', function() {
+  let user_email = $('.login-form .email').val();
+  let user_password = $('.login-form .password').val();
   $.ajax({
     method: 'POST',
-    url: `${api_host}/users`,
+    url: `${api_host}/users/login`,
     data: {
       user: {
-        name: user_name,
+        email: user_email,
         password: user_password,
       }
     },
     success: function(response) {
      $.post('setsessionvariable.php', response.user);
-      localStorage.setItem("user_name", response.user.name);
       window.location.href = 'index.php'
     },
     error: function(error) {
@@ -39,7 +38,6 @@ $('#register-form #btn-submit').on('click', function() {
     success: function(response) {
       console.log(response.user);
       $.post('setsessionvariable.php', response.user);
-      localStorage.setItem("user_name", response.user.name);
       window.location.href = 'index.php'
     },
     error: function(error) {
