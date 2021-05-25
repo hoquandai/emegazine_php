@@ -322,14 +322,6 @@
         <div class="row">
           <div class="col-md-4 sidebar" id="sidebar">
             <aside>
-              <div class="aside-body">
-                <figure class="ads">
-                  <img src="images/ad.png">
-                  <figcaption>Advertisement</figcaption>
-                </figure>
-              </div>
-            </aside>
-            <aside>
               <h1 class="aside-title">Recent Post</h1>
               <div class="aside-body">
                 <article class="article-fw">
@@ -403,35 +395,18 @@
                 </article>
               </div>
             </aside>
-            <aside>
-              <div class="aside-body">
-                <form class="newsletter">
-                  <div class="icon">
-                    <i class="ion-ios-email-outline"></i>
-                    <h1>Newsletter</h1>
-                  </div>
-                  <div class="input-group">
-                    <input type="email" class="form-control email" placeholder="Your mail">
-                    <div class="input-group-btn">
-                      <button class="btn btn-primary"><i class="ion-paper-airplane"></i></button>
-                    </div>
-                  </div>
-                  <p>By subscribing you will receive new articles in your email.</p>
-                </form>
-              </div>
-            </aside>
           </div>
           <div class="col-md-8">
             <ol class="breadcrumb">
               <li><a href="#">Home</a></li>
-              <li class="active">Film</li>
+              <li class="active">Question</li>
             </ol>
             <article class="article main-article">
               <header>
                 <ul class="details">
-                  <li>Posted on 31 December, 2016</li>
-                  <li><a>Film</a></li>
-                  <li>By <a href="#">John Doe</a></li>
+                  <li><?php echo $data->created_at ?></li>
+                  <li><a>Question</a></li>
+                  <li>By <a href="profile.php?id=<?php echo $data->creator->id ?>"><?php echo $data->creator->name ?></a></li>
                 </ul>
               </header>
               <div class="main">
@@ -493,9 +468,8 @@
                 <img src="images/img01.jpg">
               </figure>
               <div class="details">
-                <div class="job">Web Developer</div>
-                <h3 class="name">John Doe</h3>
-                <p>Nulla sagittis rhoncus nisi, vel gravida ante. Nunc lobortis condimentum elit, quis porta ipsum rhoncus vitae. Curabitur magna leo, porta vel fringilla gravida, consectetur in libero. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.</p>
+                <!-- <div class="job">Web Developer</div> -->
+                <h3 class="name"><?php echo $data->creator->name?></h3>
                 <ul class="social trp sm">
                   <li>
                     <a href="#" class="facebook">
@@ -561,110 +535,39 @@
             </div>
             <div class="line thin"></div>
             <div class="comments">
-              <h2 class="title">3 Responses <a href="#">Write a Response</a></h2>
+              <h2 class="title"><span id="comments_count"><?php echo count($data->comments) ?></span> Responses <a href="#reply">Write a Response</a></h2>
               <div class="comment-list">
-                <div class="item">
-                  <div class="user">                                
-                    <figure>
-                      <img src="images/img01.jpg">
-                    </figure>
-                    <div class="details">
-                      <h5 class="name">Mark Otto</h5>
-                      <div class="time">24 Hours</div>
-                      <div class="description">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                        tempor incididunt ut labore et dolore <a href="#">magna</a> aliqua. Ut enim ad minim veniam,
-                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.
-                      </div>
-                      <footer>
-                        <a href="#">Reply</a>
-                      </footer>
-                    </div>
-                  </div>
-                </div>
-                <div class="item">
-                  <div class="user">                                
-                    <figure>
-                      <img src="images/img01.jpg">
-                    </figure>
-                    <div class="details">
-                      <h5 class="name">Mark Otto</h5>
-                      <div class="time">24 Hours</div>
-                      <div class="description">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                        tempor incididunt ut labore et dolore <a href="#">magna</a> aliqua. Ut enim ad minim veniam,
-                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.
-                      </div>
-                      <footer>
-                        <a href="#">Reply</a>
-                      </footer>
-                    </div>
-                  </div>
-                  <div class="reply-list">
-                    <div class="item">
-                      <div class="user">                                
-                        <figure>
-                          <img src="images/img01.jpg">
-                        </figure>
-                        <div class="details">
-                          <h5 class="name">Mark Otto</h5>
-                          <div class="time">24 Hours</div>
-                          <div class="description">
-                            Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                          </div>
-                          <footer>
-                            <a href="#">Reply</a>
-                          </footer>
+                <?php foreach($data->comments as $key=>$value) { ?>
+                  <div class="item">
+                    <div class="user">                                
+                      <figure>
+                        <img src="images/img01.jpg">
+                      </figure>
+                      <div class="details">
+                        <h5 class="name"><?php echo $value->creator->name ?></h5>
+                        <div class="time"><?php echo $value->created_at ?></div>
+                        <div class="description">
+                          <?php echo $value->content ?>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div class="item">
-                  <div class="user">                                
-                    <figure>
-                      <img src="images/img01.jpg">
-                    </figure>
-                    <div class="details">
-                      <h5 class="name">Mark Otto</h5>
-                      <div class="time">24 Hours</div>
-                      <div class="description">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                        tempor incididunt ut labore et dolore <a href="#">magna</a> aliqua. Ut enim ad minim veniam,
-                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.
-                      </div>
-                      <footer>
-                        <a href="#">Reply</a>
-                      </footer>
-                    </div>
-                  </div>
-                </div>
+                <?php } ?>
               </div>
-              <form class="row">
+              <form class="row" id="reply">
                 <div class="col-md-12">
                   <h3 class="title">Leave Your Response</h3>
                 </div>
-                <div class="form-group col-md-4">
-                  <label for="name">Name <span class="required"></span></label>
-                  <input type="text" id="name" name="" class="form-control">
-                </div>
-                <div class="form-group col-md-4">
-                  <label for="email">Email <span class="required"></span></label>
-                  <input type="email" id="email" name="" class="form-control">
-                </div>
-                <div class="form-group col-md-4">
-                  <label for="website">Website</label>
-                  <input type="url" id="website" name="" class="form-control">
-                </div>
+                <input class="form-control token" name="token" type="hidden" value="<?php echo $_SESSION['user_token'] ?>"></input>
+                <input class="form-control userid" name="userid" type="hidden" value="<?php echo $_SESSION['user_id'] ?>"></input>
+                <input class="form-control user_name" name="user_name" type="hidden" value="<?php echo $_SESSION['user_name'] ?>"></input>
+                <input class="form-control question" name="question" type="hidden" value="<?php echo $data->id ?>"></input>
                 <div class="form-group col-md-12">
                   <label for="message">Response <span class="required"></span></label>
-                  <textarea class="form-control" name="message" placeholder="Write your response ..."></textarea>
+                  <textarea class="form-control message" name="message" placeholder="Write your response ..."></textarea>
                 </div>
                 <div class="form-group col-md-12">
-                  <button class="btn btn-primary">Send Response</button>
+                  <button type="button" class="btn btn-primary submit">Send Response</button>
                 </div>
               </form>
             </div>
@@ -888,6 +791,7 @@
     <script src="scripts/toast/jquery.toast.min.js"></script>
     <script src="js/demo.js"></script>
     <script src="js/application.js"></script>
+    <script src="js/questions.js"></script>
     <script src="js/e-magz.js"></script>
   </body>
 </html>
