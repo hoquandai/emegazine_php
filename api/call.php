@@ -1,6 +1,6 @@
 <?php
 
-function CallAPI($method, $url, $data = false)
+function CallAPI($method, $url, $authen= false, $data = false)
 {
     $curl = curl_init();
     $default_api_host = 'http://localhost:3000/api';
@@ -23,8 +23,11 @@ function CallAPI($method, $url, $data = false)
     }
 
     // Optional Authentication:
+    if ($authen) {
+        $authorization = "Authorization: Token ".$_SESSION['user_token'];
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json' , $authorization ));
+    }
     // curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-    // curl_setopt($curl, CURLOPT_USERPWD, "username:password");
 
     curl_setopt($curl, CURLOPT_URL, $url);
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);

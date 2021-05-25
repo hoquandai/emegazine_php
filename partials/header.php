@@ -93,7 +93,7 @@
                 </ul>
               </li>
               <li><a href="category.html">Category</a></li>
-              <li><a href="single.html">Single</a></li>
+              <li><a href="question.php">Single</a></li>
               <li><a href="page.html">Page</a></li>
               <li><a href="search.html">Search</a></li>
               <li><a href="contact.html">Contact</a></li>
@@ -174,7 +174,7 @@
                       <article class="article col-md-4 mini">
                         <div class="inner">
                           <figure>
-                            <a href="single.html">
+                            <a href="question.php">
                               <img src="images/news/img10.jpg" alt="Sample Article">
                             </a>
                           </figure>
@@ -183,14 +183,14 @@
                               <div class="time">December 10, 2016</div>
                               <div class="category"><a href="category.html">Healthy</a></div>
                             </div>
-                            <h2><a href="single.html">Duis aute irure dolor in reprehenderit in voluptate</a></h2>
+                            <h2><a href="question.php">Duis aute irure dolor in reprehenderit in voluptate</a></h2>
                           </div>
                         </div>
                       </article>
                       <article class="article col-md-4 mini">
                         <div class="inner">
                           <figure>
-                            <a href="single.html">
+                            <a href="question.php">
                               <img src="images/news/img11.jpg" alt="Sample Article">
                             </a>
                           </figure>
@@ -199,14 +199,14 @@
                               <div class="time">December 13, 2016</div>
                               <div class="category"><a href="category.html">Lifestyle</a></div>
                             </div>
-                            <h2><a href="single.html">Duis aute irure dolor in reprehenderit in voluptate</a></h2>
+                            <h2><a href="question.php">Duis aute irure dolor in reprehenderit in voluptate</a></h2>
                           </div>
                         </div>
                       </article>
                       <article class="article col-md-4 mini">
                         <div class="inner">
                           <figure>
-                            <a href="single.html">
+                            <a href="question.php">
                               <img src="images/news/img14.jpg" alt="Sample Article">
                             </a>
                           </figure>
@@ -215,7 +215,7 @@
                               <div class="time">December 14, 2016</div>
                               <div class="category"><a href="category.html">Travel</a></div>
                             </div>
-                            <h2><a href="single.html">Duis aute irure dolor in reprehenderit in voluptate</a></h2>
+                            <h2><a href="question.php">Duis aute irure dolor in reprehenderit in voluptate</a></h2>
                           </div>
                         </div>
                       </article>

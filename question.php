@@ -3,8 +3,9 @@
   require_once("api/call.php");
   $cates = json_decode(CallAPI('GET', '/categories'))->data;
   $username = $_SESSION['user_name'] ? $_SESSION['user_name'] : '';
+  $authenticated_data = $_SESSION['loggedin'] ? array("authenticated" => true) : array();
   parse_str($_SERVER['QUERY_STRING'], $params);
-  $data = json_decode(CallAPI('GET', '/questions/'.$params['id']))->data;
+  $data = json_decode(CallAPI('GET', '/questions/'.$params['id'], $_SESSION['loggedin'], $authenticated_data))->data;
 ?>
 <!DOCTYPE html>
 <html>
@@ -40,6 +41,7 @@
   </head>
 
   <body>
+    <input id="user_token" type="hidden" name="token" value="<?php echo $_SESSION['user_token'] ?>"></input>
     <header class="primary">
       <div class="firstbar">
         <div class="container">
@@ -117,7 +119,7 @@
                     </ul>
                   </li>
                   <li><a href="category.html">Category</a></li>
-                  <li><a href="single.html">Single</a></li>
+                  <li><a href="question.php">Single</a></li>
                   <li><a href="page.html">Page</a></li>
                   <li><a href="search.html">Search</a></li>
                   <li><a href="contact.html">Contact</a></li>
@@ -198,7 +200,7 @@
                           <article class="article col-md-4 mini">
                             <div class="inner">
                               <figure>
-                                <a href="single.html">
+                                <a href="question.php">
                                   <img src="images/news/img10.jpg" alt="Sample Article">
                                 </a>
                               </figure>
@@ -207,14 +209,14 @@
                                   <div class="time">December 10, 2016</div>
                                   <div class="category"><a href="category.html">Healthy</a></div>
                                 </div>
-                                <h2><a href="single.html">Duis aute irure dolor in reprehenderit in voluptate</a></h2>
+                                <h2><a href="question.php">Duis aute irure dolor in reprehenderit in voluptate</a></h2>
                               </div>
                             </div>
                           </article>
                           <article class="article col-md-4 mini">
                             <div class="inner">
                               <figure>
-                                <a href="single.html">
+                                <a href="question.php">
                                   <img src="images/news/img11.jpg" alt="Sample Article">
                                 </a>
                               </figure>
@@ -223,14 +225,14 @@
                                   <div class="time">December 13, 2016</div>
                                   <div class="category"><a href="category.html">Lifestyle</a></div>
                                 </div>
-                                <h2><a href="single.html">Duis aute irure dolor in reprehenderit in voluptate</a></h2>
+                                <h2><a href="question.php">Duis aute irure dolor in reprehenderit in voluptate</a></h2>
                               </div>
                             </div>
                           </article>
                           <article class="article col-md-4 mini">
                             <div class="inner">
                               <figure>
-                                <a href="single.html">
+                                <a href="question.php">
                                   <img src="images/news/img14.jpg" alt="Sample Article">
                                 </a>
                               </figure>
@@ -239,7 +241,7 @@
                                   <div class="time">December 14, 2016</div>
                                   <div class="category"><a href="category.html">Travel</a></div>
                                 </div>
-                                <h2><a href="single.html">Duis aute irure dolor in reprehenderit in voluptate</a></h2>
+                                <h2><a href="question.php">Duis aute irure dolor in reprehenderit in voluptate</a></h2>
                               </div>
                             </div>
                           </article>
@@ -333,12 +335,12 @@
                 <article class="article-fw">
                   <div class="inner">
                     <figure>
-                      <a href="single.html">                        
+                      <a href="question.php">                        
                         <img src="images/news/img16.jpg">
                       </a>
                     </figure>
                     <div class="details">
-                      <h1><a href="single.html">Lorem Ipsum Dolor Sit Amet Consectetur Adipisicing Elit</a></h1>
+                      <h1><a href="question.php">Lorem Ipsum Dolor Sit Amet Consectetur Adipisicing Elit</a></h1>
                       <p>
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
                       tempor incididunt ut labore et dolore magna aliqua.
@@ -354,12 +356,12 @@
                 <article class="article-mini">
                   <div class="inner">
                     <figure>
-                      <a href="single.html">
+                      <a href="question.php">
                         <img src="images/news/img05.jpg">
                       </a>
                     </figure>
                     <div class="padding">
-                      <h1><a href="single.html">Duis aute irure dolor in reprehenderit in voluptate velit</a></h1>
+                      <h1><a href="question.php">Duis aute irure dolor in reprehenderit in voluptate velit</a></h1>
                       <div class="detail">
                         <div class="category"><a href="category.html">Lifestyle</a></div>
                         <div class="time">December 22, 2016</div>
@@ -370,12 +372,12 @@
                 <article class="article-mini">
                   <div class="inner">
                     <figure>
-                      <a href="single.html">
+                      <a href="question.php">
                         <img src="images/news/img02.jpg">
                       </a>
                     </figure>
                     <div class="padding">
-                      <h1><a href="single.html">Fusce ullamcorper elit at felis cursus suscipit</a></h1>
+                      <h1><a href="question.php">Fusce ullamcorper elit at felis cursus suscipit</a></h1>
                       <div class="detail">
                         <div class="category"><a href="category.html">Travel</a></div>
                         <div class="time">December 21, 2016</div>
@@ -386,12 +388,12 @@
                 <article class="article-mini">
                   <div class="inner">
                     <figure>
-                      <a href="single.html">
+                      <a href="question.php">
                         <img src="images/news/img13.jpg">
                       </a>
                     </figure>
                     <div class="padding">
-                      <h1><a href="single.html">Duis aute irure dolor in reprehenderit in voluptate velit</a></h1>
+                      <h1><a href="question.php">Duis aute irure dolor in reprehenderit in voluptate velit</a></h1>
                       <div class="detail">
                         <div class="category"><a href="category.html">International</a></div>
                         <div class="time">December 20, 2016</div>
@@ -444,7 +446,8 @@
                   </ul>
                 </div>
                 <div class="col">
-                  <a href="#" class="love"><i class="ion-android-favorite-outline"></i> <div>1220</div></a>
+                  <?php $liked = $data->liked == true ? 'active' : '' ?>
+                  <a href="#" class="love <?php echo $liked ?>" data-questionid="<?php echo $data->id ?>"><i class="ion-android-favorite"></i> <div><?php echo $data->likes ?></div></a>
                 </div>
               </footer>
             </article>
@@ -727,48 +730,48 @@
                 <article class="article-mini">
                   <div class="inner">
                     <figure>
-                      <a href="single.html">
+                      <a href="question.php">
                         <img src="images/news/img12.jpg" alt="Sample Article">
                       </a>
                     </figure>
                     <div class="padding">
-                      <h1><a href="single.html">Donec consequat lorem quis augue pharetra</a></h1>
+                      <h1><a href="question.php">Donec consequat lorem quis augue pharetra</a></h1>
                     </div>
                   </div>
                 </article>
                 <article class="article-mini">
                   <div class="inner">
                     <figure>
-                      <a href="single.html">
+                      <a href="question.php">
                         <img src="images/news/img14.jpg" alt="Sample Article">
                       </a>
                     </figure>
                     <div class="padding">
-                      <h1><a href="single.html">eu dapibus risus aliquam etiam ut venenatis</a></h1>
+                      <h1><a href="question.php">eu dapibus risus aliquam etiam ut venenatis</a></h1>
                     </div>
                   </div>
                 </article>
                 <article class="article-mini">
                   <div class="inner">
                     <figure>
-                      <a href="single.html">
+                      <a href="question.php">
                         <img src="images/news/img15.jpg" alt="Sample Article">
                       </a>
                     </figure>
                     <div class="padding">
-                      <h1><a href="single.html">Nulla facilisis odio quis gravida vestibulum </a></h1>
+                      <h1><a href="question.php">Nulla facilisis odio quis gravida vestibulum </a></h1>
                     </div>
                   </div>
                 </article>
                 <article class="article-mini">
                   <div class="inner">
                     <figure>
-                      <a href="single.html">
+                      <a href="question.php">
                         <img src="images/news/img16.jpg" alt="Sample Article">
                       </a>
                     </figure>
                     <div class="padding">
-                      <h1><a href="single.html">Proin venenatis pellentesque arcu vitae </a></h1>
+                      <h1><a href="question.php">Proin venenatis pellentesque arcu vitae </a></h1>
                     </div>
                   </div>
                 </article>
@@ -884,6 +887,7 @@
     <script src="scripts/sweetalert/dist/sweetalert.min.js"></script>
     <script src="scripts/toast/jquery.toast.min.js"></script>
     <script src="js/demo.js"></script>
+    <script src="js/application.js"></script>
     <script src="js/e-magz.js"></script>
   </body>
 </html>

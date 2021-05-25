@@ -282,7 +282,7 @@ a, .btn {
 a {
   color: #F73F52;
 }
-a:hover, a:focus {
+a:hover {
   color: #C8081C;
 }
 a.facebook {

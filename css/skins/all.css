@@ -701,7 +701,7 @@
 .skin-orange a {
   color: #FC624D;
 }
-.skin-orange a:hover, .skin-orange a:focus {
+.skin-orange a:hover {
   color: #FB5660;
 }
 .skin-orange .badge-primary {

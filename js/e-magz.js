@@ -81,10 +81,15 @@ $(function(){
 	}
 
 	// love
-	var love = function() {	
+	var love = function() {
 		$(".love").each(function(){
 			$(this).find("div").html($.number($(this).find("div").html()));
-			$(this).click(function(){
+			$(this).click(function() {
+				var token = $('#user_token').val();
+				if (!token) {
+					window.location.href = 'login.php'
+				}
+				var question_id = $(this).data('questionid');
 				var countNow = $(this).find("div").html().replace(',', '');
 				if(!$(this).hasClass("active")) {
 					$(this).find(".animated").remove();
@@ -98,16 +103,44 @@ $(function(){
 						$(this).remove();
 					  $(this).off(e);
 					});
-					// add some code ("love")
+					$.ajax({
+				    headers: { "Authorization": "Token " + token },
+				    method: 'POST',
+				    url: `${api_host}/votes`,
+				    data: {
+				    	question_id: question_id
+				    },
+				    success: function(response) {
+				      console.log(response)
+				     	console.log(response.data)
+				    },
+				    error: function(error) {
+				      console.log(error.responseJSON);
+				    }
+				  });
 				}else{
 					$(this).find(".animated").remove();
 					$(this).removeClass("active");
-					$(this).find("i").addClass("ion-android-favorite-outline");
-					$(this).find("i").removeClass("ion-android-favorite");
+					$(this).find("i").addClass("ion-android-favorite");
+					// $(this).find("i").removeClass("ion-android-favorite");
 					$(this).find("div").html(parseInt(countNow) - 1);
 					$(this).find("div").html($.number($(this).find("div").html()));
 
-					// add some code ("unlove")
+					$.ajax({
+				    headers: { "Authorization": "Token " + token },
+				    method: 'DELETE',
+				    url: `${api_host}/votes/remove`,
+				    data: {
+				    	question_id: question_id
+				    },
+				    success: function(response) {
+				      console.log(response)
+				     	console.log(response.data)
+				    },
+				    error: function(error) {
+				      console.log(error.responseJSON);
+				    }
+				  });
 				}
 				return false;
 			});
