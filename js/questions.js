@@ -2,6 +2,7 @@ $('#question-form button.submit').on('click', function() {
   let token = $('#question-form .token').val();
 
   let userId = $('#question-form .userid').val();
+  let excerpt = $('#question-form .excerpt').val();
   let content = $('#question-form .content').val();
   let categoryId = $('#question-form #category').val();
   let tags = $('#question-form .tags').val();
@@ -11,6 +12,7 @@ $('#question-form button.submit').on('click', function() {
     url: `${api_host}/questions`,
     data: {
       question: {
+        excerpt: excerpt,
         content: content,
         category_id: categoryId,
         tag_list: tags,

@@ -45,3 +45,30 @@ $('#register-form #btn-submit').on('click', function() {
     }
   });
 });
+
+$('#user-form #btn-submit').on('click', function() {
+  let token = $('#user-form .token').val();
+  let user_name = $('#user-form .name').val();
+  let user_password = $('#user-form .password').val();
+  let user_email = $('#user-form .email').val();
+  $.ajax({
+    method: 'PUT',
+    url: `${api_host}/user`,
+    headers: { "Authorization": "Token " + token },
+    data: {
+      user: {
+        name: user_name,
+        password: user_password,
+        email: user_email
+      }
+    },
+    success: function(response) {
+      console.log(response.user);
+      $.post('setsessionvariable.php', response.user);
+      window.location.href = `profile.php?id=${response.user.id}`
+    },
+    error: function(error) {
+      console.log(error.responseJSON);
+    }
+  });
+});

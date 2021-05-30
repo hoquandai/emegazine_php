@@ -1,8 +1,13 @@
 <?php
   session_start();
   require_once("api/call.php");
-  $cates = json_decode(CallAPI('GET', '/categories'))->data;
   $username = $_SESSION['user_name'] ? $_SESSION['user_name'] : '';
+  $authenticated_data = $_SESSION['loggedin'] ? array("authenticated" => true) : array();
+  parse_str($_SERVER['QUERY_STRING'], $params);
+  $data = json_decode(CallAPI('GET', '/user?'.$_SERVER['QUERY_STRING']))->data;
+  $user = $data->user;
+  $questions = $data->questions;
+  $stars = $data->stars;
 ?>
 <!DOCTYPE html>
 <html>
@@ -313,76 +318,81 @@
       <!-- End nav -->
     </header>
 
-    <section class="page">
+    <section>
       <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-            <ol class="breadcrumb">
-              <li><a href="questions.php">Questions</a></li>
-              <li class="active">Create</li>
-            </ol>
-            <h1 class="page-title">Create</h1>
-            <p class="page-subtitle">Give me your question</p>
-            <div class="line thin"></div>
-            <div class="page-description">
-              <div class="row">
-                <div class="col-md-6 col-sm-6">
-                  <h3>Question</h3>
-                  <p>
-                    Your question will be appear on our site later.
-                    After being processed and approved by system.
-                  </p>
-                  <p>
-                    Have a nice day!
-                  </p>
+        <aside>
+          <div class="aside-body">
+            <div class="featured-author">
+              <div class="featured-author-inner">
+                <div class="featured-author-cover" style="background-image: url('images/news/img15.jpg');">
+                  <div class="badges">
+<!--                     <div class="badge-item"><i class="ion-star"></i> Featured</div> -->
+                  </div>
+                  <div class="featured-author-center">
+                    <figure class="featured-author-picture">
+                      <img src="images/img01.jpg" alt="Sample Article">
+                    </figure>
+                    <div class="featured-author-info">
+                      <h2 class="name"><?php echo $user->name ?></h2>
+                      <div class="desc">@<?php echo $user->name ?></div>
+                    </div>
+                  </div>
                 </div>
-                <div class="col-md-6 col-sm-6">
-                  <form class="row contact" id="question-form">
-                    <input class="form-control token" name="token" type="hidden" value="<?php echo $_SESSION['user_token'] ?>"></input>
-                    <input class="form-control userid" name="userid" type="hidden" value="<?php echo $_SESSION['user_id'] ?>"></input>
-                    <div class="col-md-12">
-                      <div class="form-group">
-                        <label>Excerpt <span class="required"></span></label>
-                        <input class="form-control excerpt" name="excerpt" required="" type="text"></input>
-                      </div>
+                <div class="featured-author-body">
+                  <div class="featured-author-count">
+                    <div class="item">
+                      <a href="#">
+                        <div class="name">Questions</div>
+                        <div class="value"><?php echo count($questions) ?></div>                            
+                      </a>
                     </div>
-                    <div class="col-md-12">
-                      <div class="form-group">
-                        <label>Content <span class="required"></span></label>
-                        <textarea class="form-control content" name="content" required=""></textarea>
-                      </div>
+                    <div class="item">
+                      <a href="#">
+                        <div class="name">Stars</div>
+                        <div class="value"><?php echo $stars ?></div>                            
+                      </a>
                     </div>
-                    <div class="col-md-12">
-                      <div class="form-group">
-                        <label for="category">Choose a category <span class="required"></span></label>
-                        <select class="form-select" name="category" id="category">
-                          <?php
-                            if (!empty($cates)) { 
-                              foreach($cates as $key=>$value){
-                          ?>
-                            <option value="<?php echo $value->id ?>"><?php echo $value->name ?></option>
-                          <?php
-                              }
-                            }
-                          ?>
-                        </select>
-                      </div>
+                    <div class="item">
+                      <a href="profile_form.php" class="disabled">
+                        <div class="icon">
+                          <div>Update</div>
+                          <i class="ion-chevron-right"></i>
+                        </div>                            
+                      </a>
                     </div>
-                    <div class="col-md-12">
-                      <div class="form-group">
-                        <label>Tags <span class="required"></span></label>
-                        <input class="form-control tags" name="tag" required="" type="text" placeholder="tag1, tag2"></input>
-                      </div>
+                  </div>
+                 <!--  <div class="featured-author-quote">
+                    "Eur costrict mobsa undivani krusvuw blos andugus pu aklosah"
+                  </div> -->
+                  <div class="block">
+                    <h2 class="block-title">Questions</h2>
+                    <div class="block-body">
+                        <?php foreach($questions as $key=>$value) { ?>
+                        <article class="article">
+                          <div class="inner">
+                            <figure>
+                              <a href="question.php?id=<?php echo $value->id ?>">
+                                <img src="images/news/img03.jpg" alt="Sample Article">
+                              </a>
+                            </figure>
+                            <div class="padding">
+                              <div class="detail">
+                                  <div class="time"><?php echo $value->created_at ?></div>
+                                  <div class="category"><a href="category.php?id=<?php echo $value->category->id ?>"><?php echo $value->category->name ?></a></div>
+                              </div>
+                              <h2><a href="qeustion.php?id=<?php echo $value->id ?>"><?php echo $value->excerpt ?></a></h2>
+                              <p><?php echo $value->content ?></p>
+                            </div>
+                          </div>
+                        </article>
+                        <?php } ?>
                     </div>
-                    <div class="col-md-12">
-                      <button type="button" class="btn btn-primary submit">Submit</button>
-                    </div>
-                  </form>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </aside>
       </div>
     </section>
 
@@ -601,7 +611,5 @@
     <script src="scripts/toast/jquery.toast.min.js"></script>
     <script src="js/demo.js"></script>
     <script src="js/e-magz.js"></script>
-    <script src="js/application.js"></script>
-    <script src="js/user.js"></script>
   </body>
 </html>

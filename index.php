@@ -94,7 +94,7 @@
 								<?php
 									} else {
 								?>
-										<li><a href="profile.html"><i class="ion-person"></i><div><?php echo $username ?></div></a></li>
+										<li><a href="profile.php?id=<?php echo $_SESSION['user_id'] ?>"><i class="ion-person"></i><div><?php echo $username ?></div></a></li>
 										<li><a href="logout.php"><i class="ion-log-out"></i><div>Logout</div></a></li>
 								<?php
 									}
@@ -241,6 +241,7 @@
 														<div class="time"><?php echo $value->created_at ?></div>
 														<div class="category"><a href="category.php?id=<?php echo $value->category->id ?>"><?php echo $value->category->name ?></a></div>
 													</div>
+													<h2><a href="qeustion.php?id=<?php echo $value->id ?>"><?php echo $value->excerpt ?></a></h2>
 													<p><?php echo $value->content ?></p>
 													<footer>
 														<?php $like_status = in_array($value->id, $latest_likes) ? 'active' : '' ?>

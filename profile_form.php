@@ -1,5 +1,6 @@
 <?php
   session_start();
+  if (!$_SESSION['loggedin']) { header("Location: index.php"); }
   require_once("api/call.php");
   $cates = json_decode(CallAPI('GET', '/categories'))->data;
   $username = $_SESSION['user_name'] ? $_SESSION['user_name'] : '';
@@ -313,71 +314,28 @@
       <!-- End nav -->
     </header>
 
-    <section class="page">
+    <section class="login first grey">
       <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-            <ol class="breadcrumb">
-              <li><a href="questions.php">Questions</a></li>
-              <li class="active">Create</li>
-            </ol>
-            <h1 class="page-title">Create</h1>
-            <p class="page-subtitle">Give me your question</p>
-            <div class="line thin"></div>
-            <div class="page-description">
-              <div class="row">
-                <div class="col-md-6 col-sm-6">
-                  <h3>Question</h3>
-                  <p>
-                    Your question will be appear on our site later.
-                    After being processed and approved by system.
-                  </p>
-                  <p>
-                    Have a nice day!
-                  </p>
+        <div class="box-wrapper">       
+          <div class="box box-border">
+            <div class="box-body">
+              <h4>User Info</h4>
+              <div id="user-form">
+                <input class="form-control token" name="token" type="hidden" value="<?php echo $_SESSION['user_token'] ?>"></input>
+                <div class="form-group">
+                  <label>Username</label>
+                  <input type="text" name="name" class="form-control name" value="<?php echo $_SESSION['user_name'] ?>">
                 </div>
-                <div class="col-md-6 col-sm-6">
-                  <form class="row contact" id="question-form">
-                    <input class="form-control token" name="token" type="hidden" value="<?php echo $_SESSION['user_token'] ?>"></input>
-                    <input class="form-control userid" name="userid" type="hidden" value="<?php echo $_SESSION['user_id'] ?>"></input>
-                    <div class="col-md-12">
-                      <div class="form-group">
-                        <label>Excerpt <span class="required"></span></label>
-                        <input class="form-control excerpt" name="excerpt" required="" type="text"></input>
-                      </div>
-                    </div>
-                    <div class="col-md-12">
-                      <div class="form-group">
-                        <label>Content <span class="required"></span></label>
-                        <textarea class="form-control content" name="content" required=""></textarea>
-                      </div>
-                    </div>
-                    <div class="col-md-12">
-                      <div class="form-group">
-                        <label for="category">Choose a category <span class="required"></span></label>
-                        <select class="form-select" name="category" id="category">
-                          <?php
-                            if (!empty($cates)) { 
-                              foreach($cates as $key=>$value){
-                          ?>
-                            <option value="<?php echo $value->id ?>"><?php echo $value->name ?></option>
-                          <?php
-                              }
-                            }
-                          ?>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-md-12">
-                      <div class="form-group">
-                        <label>Tags <span class="required"></span></label>
-                        <input class="form-control tags" name="tag" required="" type="text" placeholder="tag1, tag2"></input>
-                      </div>
-                    </div>
-                    <div class="col-md-12">
-                      <button type="button" class="btn btn-primary submit">Submit</button>
-                    </div>
-                  </form>
+                <div class="form-group">
+                  <label>Email</label>
+                  <input disabled type="email" name="email" class="form-control email" value="<?php echo $_SESSION['user_email'] ?>">
+                </div>
+                <div class="form-group">
+                  <label class="fw">Password</label>
+                  <input type="password" name="password" class="form-control password">
+                </div>
+                <div class="form-group text-right">
+                  <button id="btn-submit" type="button" class="btn btn-primary btn-block">Update</button>
                 </div>
               </div>
             </div>

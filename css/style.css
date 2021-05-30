@@ -378,6 +378,12 @@ a.twitch {
   color: #fff !important;
 }
 
+a.disabled {
+  cursor: none;
+  color: grey;
+  pointer-events: none;
+}
+
 .main-loading {
   position: fixed;
   top: 50%;
@@ -3998,8 +4004,13 @@ blockquote {
   border-top: 1px solid #f2f2f2;
 }
 .featured-author .featured-author-body .block {
-  display: inline-block;
+/*  display: inline-block;*/
   padding: 15px;
+}
+.featured-author .featured-author-body .block .article {
+/*  display: inline-block;*/
+  width: 354px;
+  padding: 2rem;
 }
 .featured-author .featured-author-body .block .block-title {
   font-size: 14px;
@@ -4022,6 +4033,9 @@ blockquote {
 }
 .featured-author .featured-author-body .block .block-body {
   margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: end;
 }
 
 .item-list-round {
