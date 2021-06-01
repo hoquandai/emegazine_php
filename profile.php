@@ -8,6 +8,7 @@
   $user = $data->user;
   $questions = $data->questions;
   $stars = $data->stars;
+  $update_state = $params['id'] == $_SESSION['user_id'] ? '' : 'disabled';
 ?>
 <!DOCTYPE html>
 <html>
@@ -353,7 +354,7 @@
                       </a>
                     </div>
                     <div class="item">
-                      <a href="profile_form.php" class="disabled">
+                      <a href="profile_form.php" class="<?php echo $update_state ?>">
                         <div class="icon">
                           <div>Update</div>
                           <i class="ion-chevron-right"></i>
