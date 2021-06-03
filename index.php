@@ -1,5 +1,6 @@
 <?php
 	session_start();
+	$api = 'http://localhost:3000';
   require_once("api/call.php");
   $authenticated_data = $_SESSION['loggedin'] ? array("authenticated" => true) : array();
   $cates = CallAPI('GET', '/categories');
@@ -98,7 +99,7 @@
 								<?php
 									if ($username == '') {
 								?>
-										<li><a href="register.html"><i class="ion-person-add"></i><div>Register</div></a></li>
+										<li><a href="register.php"><i class="ion-person-add"></i><div>Register</div></a></li>
 										<li><a href="login.php"><i class="ion-person"></i><div>Login</div></a></li>
 								<?php
 									} else {
@@ -333,7 +334,7 @@
 									<div class="details">
 										<div class="detail">
 											<div class="category">
-												<a href="categories.php?id=<?php echo $value->category->id ?>"><?php echo $value->category->name ?></a>
+												<a href="category.php?id=<?php echo $value->category->id ?>"><?php echo $value->category->name ?></a>
 											</div>
 											<div class="time"><?php echo $value->created_at ?></div>
 										</div>
@@ -368,7 +369,7 @@
 											</div>
 											<div class="featured-author-center">
 												<figure class="featured-author-picture">
-													<img src="images/img01.jpg" alt="Sample Article">
+													<img src="<?php echo $api.$_SESSION['user_avatar'] ?>" alt="Sample Article">
 												</figure>
 												<div class="featured-author-info">
 													<h2 class="name"><?php echo $_SESSION['user_name'] ?></h2>

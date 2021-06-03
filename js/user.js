@@ -11,6 +11,7 @@ $('.login-form #login-btn').on('click', function() {
       }
     },
     success: function(response) {
+      console.log(response);
      $.post('setsessionvariable.php', response.user);
       window.location.href = 'index.php'
     },
@@ -51,17 +52,20 @@ $('#user-form #btn-submit').on('click', function() {
   let user_name = $('#user-form .name').val();
   let user_password = $('#user-form .password').val();
   let user_email = $('#user-form .email').val();
+  let user_avatar = $('#user-form .avatar')[0].files[0];
+  let form_data = new FormData();
+  form_data.append('user[name]', user_name);
+  form_data.append('user[password]', user_password);
+  form_data.append('user[email]', user_email);
+  form_data.append('user[avatar]', user_avatar);
   $.ajax({
     method: 'PUT',
     url: `${api_host}/user`,
     headers: { "Authorization": "Token " + token },
-    data: {
-      user: {
-        name: user_name,
-        password: user_password,
-        email: user_email
-      }
-    },
+    processData: false,
+    enctype: 'multipart/form-data',
+    contentType: false,
+    data: form_data,
     success: function(response) {
       console.log(response.user);
       $.post('setsessionvariable.php', response.user);

@@ -334,6 +334,10 @@
                   <label class="fw">Password</label>
                   <input type="password" name="password" class="form-control password">
                 </div>
+                <div class="form-group">
+                  <label for="avatar">Choose a profile picture:</label>
+                  <input type="file" class="form-control avatar" id="avatar" name="avatar" accept="image/png, image/jpeg">
+                </div>
                 <div class="form-group text-right">
                   <button id="btn-submit" type="button" class="btn btn-primary btn-block">Update</button>
                 </div>
