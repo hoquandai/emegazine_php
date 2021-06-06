@@ -8,7 +8,8 @@
   $latest_data = json_decode(CallAPI('GET', '/questions/tag', $_SESSION['loggedin'], $payload))->data;
   $latest_questions = $latest_data->questions;
   $latest_likes = $latest_data->likes;
-  $username = $_SESSION['user_name'] ? $_SESSION['user_name'] : ''
+  $username = $_SESSION['user_name'] ? $_SESSION['user_name'] : '';
+  $cate_groups = json_decode(CallAPI('GET', '/categories/groups'))->data;
 ?>
 <!DOCTYPE html>
 <html>
@@ -75,7 +76,7 @@
                       if (!empty($categories_data)) { 
                         foreach($categories_data as $key=>$value){
                     ?>
-                      <li><a href="#<?php echo $key ?>"><?php echo $value->name ?></a></li>
+                      <li><a href="category.php?id=<?php echo $value->id ?>"><?php echo $value->name ?></a></li>
                     <?php
                         }
                       }
@@ -87,15 +88,15 @@
             <div class="col-md-3 col-sm-12 text-right">
               <ul class="nav-icons">
                 <?php
-                  if ($username == '') {
+                  if ($_SESSION['loggedin']) {
                 ?>
-                    <li><a href="register.html"><i class="ion-person-add"></i><div>Register</div></a></li>
-                    <li><a href="login.php"><i class="ion-person"></i><div>Login</div></a></li>
+                    <li><a href="profile.php?id=<?php echo $_SESSION['user_id'] ?>"><i class="ion-person"></i><div><?php echo $_SESSION['user_name'] ?></div></a></li>
+                    <li><a href="logout.php"><i class="ion-log-out"></i><div>Logout</div></a></li>
                 <?php
                   } else {
                 ?>
-                    <li><a href="profile.php?id=<?php echo $_SESSION['user_id'] ?>"><i class="ion-person"></i><div><?php echo $username ?></div></a></li>
-                    <li><a href="logout.php"><i class="ion-log-out"></i><div>Logout</div></a></li>
+                    <li><a href="register.php"><i class="ion-person-add"></i><div>Register</div></a></li>
+                    <li><a href="login.php"><i class="ion-person"></i><div>Login</div></a></li>
                 <?php
                   }
                 ?>
@@ -126,17 +127,34 @@
               <li class="for-tablet"><a href="login.php">Login</a></li>
               <li class="for-tablet"><a href="register.php">Register</a></li>
               <li><a href="index.php">Home</a></li>
-              <li class="dropdown magz-dropdown"><a href="#">Profile <i class="ion-ios-arrow-right"></i></a>
+              <li class="dropdown magz-dropdown magz-dropdown-megamenu"><a href="#">Category <i class="ion-ios-arrow-right"></i></a>
+                <div class="dropdown-menu megamenu">
+                  <div class="megamenu-inner">
+                    <div class="row">
+                      <?php foreach($cate_groups as $key=>$value) { ?>
+                      <div class="col-md-3">
+                        <ul class="vertical-menu">
+                          <?php foreach($value as $key1=>$value1) { ?>
+                          <li><a href="category.php?id=<?php echo $value1->id ?>"><?php echo $value1->name ?></a></li>
+                          <?php } ?>
+                        </ul>
+                      </div>
+                      <?php } ?>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <?php if ($_SESSION['loggedin']) { ?>
+              <li class="dropdown magz-dropdown"><a href="profile.php?id=<?php echo $_SESSION['user_id'] ?>">Profile <i class="ion-ios-arrow-right"></i></a>
                 <ul class="dropdown-menu">
-                  <li><a href="#"><i class="icon ion-person"></i> My Account</a></li>
-                  <li><a href="#"><i class="icon ion-heart"></i> Favorite</a></li>
-                  <li><a href="#"><i class="icon ion-chatbox"></i> Comments</a></li>
-                  <li><a href="#"><i class="icon ion-key"></i> Change Password</a></li>
-                  <li><a href="#"><i class="icon ion-settings"></i> Settings</a></li>
+                  <li><a href="profile.php?id=<?php echo $_SESSION['user_id'] ?>"><i class="icon ion-person"></i> My Account</a></li>
+                  <li><a href="profile_form.php?id=<?php echo $_SESSION['user_id'] ?>"><i class="icon ion-settings"></i> Update Profile</a></li>
+                  <li><a href="question_form.php"><i class="icon ion-android-add-circle"></i>Add Question</a></li>
                   <li class="divider"></li>
-                  <li><a href="#"><i class="icon ion-log-out"></i> Logout</a></li>
+                  <li><a href="logout.php"><i class="icon ion-log-out"></i> Logout</a></li>
                 </ul>
               </li>
+              <?php } ?>
             </ul>
           </div>
         </div>

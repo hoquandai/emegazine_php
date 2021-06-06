@@ -4,12 +4,14 @@
   require_once("api/call.php");
   $authenticated_data = $_SESSION['loggedin'] ? array("authenticated" => true) : array();
   $cates = CallAPI('GET', '/categories');
+  $cate_groups = json_decode(CallAPI('GET', '/categories/groups'))->data;
   $latest_data = json_decode(CallAPI('GET', '/questions/latest', $_SESSION['loggedin'], $authenticated_data))->data;
   $latest_questions = $latest_data->questions;
   $latest_likes = $latest_data->likes;
   $hot_questions = json_decode(CallAPI('GET', '/questions/hot'))->data;
   $interactive_questions = json_decode(CallAPI('GET', '/questions/interactive'))->data;
   $trending_tags = json_decode(CallAPI('GET', '/questions/trending_tags'))->data;
+  $top_tagging = json_decode(CallAPI('GET', '/questions/top_tagging'))->data;
   $username = $_SESSION['user_name'] ? $_SESSION['user_name'] : '';
   $ranking_users = json_decode(CallAPI('GET', '/user/ranking'))->data;
   if($_SESSION['loggedin']) {
@@ -85,7 +87,7 @@
 											if (!empty($categories_data)) { 
     										foreach($categories_data as $key=>$value){
 										?>
-											<li><a href="#<?php echo $key ?>"><?php echo $value->name ?></a></li>
+											<li><a href="category.php?id=<?php echo $value->id ?>"><?php echo $value->name ?></a></li>
 									  <?php
 									      }
 									  	}
@@ -97,15 +99,15 @@
 						<div class="col-md-3 col-sm-12 text-right">
 							<ul class="nav-icons">
 								<?php
-									if ($username == '') {
+									if ($_SESSION['loggedin']) {
 								?>
-										<li><a href="register.php"><i class="ion-person-add"></i><div>Register</div></a></li>
-										<li><a href="login.php"><i class="ion-person"></i><div>Login</div></a></li>
+										<li><a href="profile.php?id=<?php echo $_SESSION['user_id'] ?>"><i class="ion-person"></i><div><?php echo $_SESSION['user_name'] ?></div></a></li>
+										<li><a href="logout.php"><i class="ion-log-out"></i><div>Logout</div></a></li>
 								<?php
 									} else {
 								?>
-										<li><a href="profile.php?id=<?php echo $_SESSION['user_id'] ?>"><i class="ion-person"></i><div><?php echo $username ?></div></a></li>
-										<li><a href="logout.php"><i class="ion-log-out"></i><div>Logout</div></a></li>
+										<li><a href="register.php"><i class="ion-person-add"></i><div>Register</div></a></li>
+										<li><a href="login.php"><i class="ion-person"></i><div>Login</div></a></li>
 								<?php
 									}
 								?>
@@ -136,17 +138,34 @@
 							<li class="for-tablet"><a href="login.php">Login</a></li>
 							<li class="for-tablet"><a href="register.php">Register</a></li>
 							<li><a href="index.php">Home</a></li>
-							<li class="dropdown magz-dropdown"><a href="#">Profile <i class="ion-ios-arrow-right"></i></a>
+							<li class="dropdown magz-dropdown magz-dropdown-megamenu"><a href="#">Category <i class="ion-ios-arrow-right"></i></a>
+                <div class="dropdown-menu megamenu">
+                  <div class="megamenu-inner">
+                    <div class="row">
+                    	<?php foreach($cate_groups as $key=>$value) { ?>
+                      <div class="col-md-3">
+                        <ul class="vertical-menu">
+                        	<?php foreach($value as $key1=>$value1) { ?>
+                        	<li><a href="category.php?id=<?php echo $value1->id ?>"><?php echo $value1->name ?></a></li>
+                        	<?php } ?>
+                        </ul>
+                      </div>
+                      <?php } ?>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <?php if ($_SESSION['loggedin']) { ?>
+							<li class="dropdown magz-dropdown"><a href="profile.php?id=<?php echo $_SESSION['user_id'] ?>">Profile <i class="ion-ios-arrow-right"></i></a>
 								<ul class="dropdown-menu">
-									<li><a href="#"><i class="icon ion-person"></i> My Account</a></li>
-									<li><a href="#"><i class="icon ion-heart"></i> Favorite</a></li>
-									<li><a href="#"><i class="icon ion-chatbox"></i> Comments</a></li>
-									<li><a href="#"><i class="icon ion-key"></i> Change Password</a></li>
-									<li><a href="#"><i class="icon ion-settings"></i> Settings</a></li>
+									<li><a href="profile.php?id=<?php echo $_SESSION['user_id'] ?>"><i class="icon ion-person"></i> My Account</a></li>
+									<li><a href="profile_form.php?id=<?php echo $_SESSION['user_id'] ?>"><i class="icon ion-settings"></i> Update Profile</a></li>
+									<li><a href="question_form.php"><i class="icon ion-android-add-circle"></i>Add Question</a></li>
 									<li class="divider"></li>
-									<li><a href="#"><i class="icon ion-log-out"></i> Logout</a></li>
+									<li><a href="logout.php"><i class="icon ion-log-out"></i> Logout</a></li>
 								</ul>
 							</li>
+							<?php } ?>
 						</ul>
 					</div>
 				</div>
@@ -159,78 +178,23 @@
 				<div class="row">
 					<div class="col-md-8 col-sm-12 col-xs-12">
 						<div class="headline">
-							<div class="nav" id="headline-nav">
-								<a class="left carousel-control" role="button" data-slide="prev">
-									<span class="ion-ios-arrow-left" aria-hidden="true"></span>
-									<span class="sr-only">Previous</span>
-								</a>
-								<a class="right carousel-control" role="button" data-slide="next">
-									<span class="ion-ios-arrow-right" aria-hidden="true"></span>
-									<span class="sr-only">Next</span>
-								</a>
-							</div>
-							<div class="owl-carousel owl-theme" id="headline">							
-								<div class="item">
-									<a href="#"><div class="badge">Tip!</div> Vestibulum ante ipsum primis in faucibus orci</a>
-								</div>
-								<div class="item">
-									<a href="#">Ut rutrum sodales mauris ut suscipit</a>
-								</div>
-							</div>
 						</div>
 						<div class="owl-carousel owl-theme slide" id="featured">
+							<?php foreach($top_tagging as $key=>$value) { ?>
 							<div class="item">
 								<article class="featured">
 									<div class="overlay"></div>
 									<figure>
-										<img src="images/news/img04.jpg" alt="Sample Article">
+										<img src="<?php echo $api.$value->image ?>" alt="Sample Article">
 									</figure>
 									<div class="details">
-										<div class="category"><a href="category.html">Computer</a></div>
-										<h1><a href="question.php">Phasellus iaculis quam sed est elementum vel ornare ligula venenatis</a></h1>
-										<div class="time">December 26, 2016</div>
+										<div class="category"><a href="category.php?id=<?php echo $value->category->id ?>"><?php echo $value->category->name ?></a></div>
+										<h1><a href="question.php?id=<?php echo $value->id ?>"><?php echo $value->excerpt ?></a></h1>
+										<div class="time"><?php echo $value->created_at ?></div>
 									</div>
 								</article>
 							</div>
-							<div class="item">
-								<article class="featured">
-									<div class="overlay"></div>
-									<figure>
-										<img src="images/news/img14.jpg" alt="Sample Article">
-									</figure>
-									<div class="details">
-										<div class="category"><a href="category.html">Travel</a></div>
-										<h1><a href="question.php">Class aptent taciti sociosqu ad litora torquent per conubia nostra</a></h1>
-										<div class="time">December 10, 2016</div>
-									</div>
-								</article>
-							</div>
-							<div class="item">
-								<article class="featured">
-									<div class="overlay"></div>
-									<figure>
-										<img src="images/news/img13.jpg" alt="Sample Article">
-									</figure>
-									<div class="details">
-										<div class="category"><a href="category.html">International</a></div>
-										<h1><a href="question.php">Maecenas accumsan tortor ut velit pharetra mollis</a></h1>
-										<div class="time">October 12, 2016</div>
-									</div>
-								</article>
-							</div>
-							<div class="item">
-								<article class="featured">
-									<div class="overlay"></div>
-									<figure>
-										<img src="images/news/img05.jpg" alt="Sample Article">
-									</figure>
-									<div class="details">
-										<div class="category"><a href="category.html">Lifestyle</a></div>
-										<h1><a href="question.php">Mauris elementum libero at pharetra auctor Fusce ullamcorper elit</a></h1>
-										<div class="time">November 27, 2016</div>
-									</div>
-								</article>
-							</div>
+							<?php } ?>
 						</div>
 						<div class="line">
 							<div>Latest Questions</div>
@@ -243,7 +207,7 @@
 											<div class="inner">
 												<figure>
 													<a href="question.php?id=<?php echo $value->id ?>">
-														<img src="images/news/img10.jpg" alt="Sample Article">
+														<img src="<?php echo $api.$value->image ?>" alt="Sample Article">
 													</a>
 												</figure>
 												<div class="padding">
@@ -267,11 +231,6 @@
 									</div>
 								</div>
 							<?php } ?>
-						</div>
-						<div class="banner">
-							<a href="#">
-								<img src="images/ads.png" alt="Sample Article">
-							</a>
 						</div>
 						<div class="line transparent little"></div>
 						<div class="row">
@@ -303,7 +262,7 @@
 											<div class="inner">
 												<figure>
 													<a href="question.php?id=<?php echo $value->id ?>">
-														<img src="images/news/img09.jpg" alt="Hot Question <?php echo $value->id ?>">
+														<img src="<?php echo $api.$value->image ?>" alt="Hot Question <?php echo $value->id ?>">
 													</a>
 												</figure>
 												<div class="padding">
@@ -328,7 +287,7 @@
 								<div class="inner">
 									<figure>
 										<a href="question.php">
-											<img src="images/news/img11.jpg" alt="Sample Article">
+											<img src="<?php echo $api.$value->image ?>" alt="Sample Article">
 										</a>
 									</figure>
 									<div class="details">
@@ -414,7 +373,7 @@
 									<div class="item">
 										<a class="user" href="profile.php?id=<?php echo $value->id ?>">                                
 											<figure>
-												<img src="images/img01.jpg" alt="User Picture">
+												<img src="<?php echo $api.$value->avatar ?>" alt="User Picture">
 											</figure>
 											<div class="details">
 												<h5 class="name"><?php echo $value->name ?></h5>
@@ -434,7 +393,7 @@
                   <div class="inner">
                     <figure>
                       <a href="question.php?id=<?php echo $value->id ?>">
-                        <img src="images/news/img07.jpg" alt="Sample Article">
+                        <img src="<?php echo $api.$value->image ?>" alt="Sample Article">
                       </a>
                     </figure>
                     <div class="padding">

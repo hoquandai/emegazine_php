@@ -5,23 +5,27 @@ $('#question-form button.submit').on('click', function() {
   let excerpt = $('#question-form .excerpt').val();
   let content = $('#question-form .content').val();
   let categoryId = $('#question-form #category').val();
+  let image = $('#question-form .image')[0].files[0];
   let tags = $('#question-form .tags').val();
+  let form_data = new FormData();
+
+  form_data.append('question[excerpt]', excerpt);
+  form_data.append('question[content]', content);
+  form_data.append('question[category_id]', categoryId);
+  form_data.append('question[tag_list]', tags);
+  form_data.append('question[user_id]', userId);
+  form_data.append('question[image]', image);
   $.ajax({
     headers: { "Authorization": "Token " + token },
     method: 'POST',
     url: `${api_host}/questions`,
-    data: {
-      question: {
-        excerpt: excerpt,
-        content: content,
-        category_id: categoryId,
-        tag_list: tags,
-        user_id: userId
-      }
-    },
+    processData: false,
+    enctype: 'multipart/form-data',
+    contentType: false,
+    data: form_data,
     success: function(response) {
-      console.log(response)
-     console.log(response.data)
+     window.location.href = `question.php?id=${response.data.id}`
+
     },
     error: function(error) {
       console.log(error.responseJSON);

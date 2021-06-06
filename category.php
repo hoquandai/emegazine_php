@@ -8,7 +8,9 @@
   $latest_data = json_decode(CallAPI('GET', '/questions/category', $_SESSION['loggedin'], $payload))->data;
   $latest_questions = $latest_data->questions;
   $latest_likes = $latest_data->likes;
-  $username = $_SESSION['user_name'] ? $_SESSION['user_name'] : ''
+  $username = $_SESSION['user_name'] ? $_SESSION['user_name'] : '';
+  $cates = CallAPI('GET', '/categories');
+  $cate_groups = json_decode(CallAPI('GET', '/categories/groups'))->data;
 ?>
 <!DOCTYPE html>
 <html>
@@ -75,7 +77,7 @@
                       if (!empty($categories_data)) { 
                         foreach($categories_data as $key=>$value){
                     ?>
-                      <li><a href="#<?php echo $key ?>"><?php echo $value->name ?></a></li>
+                      <li><a href="category.php?id=<?php echo $value->id ?>"><?php echo $value->name ?></a></li>
                     <?php
                         }
                       }
@@ -126,17 +128,33 @@
               <li class="for-tablet"><a href="login.php">Login</a></li>
               <li class="for-tablet"><a href="register.php">Register</a></li>
               <li><a href="index.php">Home</a></li>
-              <li class="dropdown magz-dropdown"><a href="#">Profile <i class="ion-ios-arrow-right"></i></a>
+              <li class="dropdown magz-dropdown magz-dropdown-megamenu"><a href="#">Category <i class="ion-ios-arrow-right"></i></a>
+                <div class="dropdown-menu megamenu">
+                  <div class="megamenu-inner">
+                    <div class="row">
+                      <?php foreach($cate_groups as $key=>$value) { ?>
+                      <div class="col-md-3">
+                        <ul class="vertical-menu">
+                          <?php foreach($value as $key1=>$value1) { ?>
+                          <li><a href="category.php?id=<?php echo $value1->id ?>"><?php echo $value1->name ?></a></li>
+                          <?php } ?>
+                        </ul>
+                      </div>
+                      <?php } ?>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <?php if ($_SESSION['loggedin']) { ?>
+              <li class="dropdown magz-dropdown"><a href="profile.php?id=<?php echo $_SESSION['user_id'] ?>">Profile <i class="ion-ios-arrow-right"></i></a>
                 <ul class="dropdown-menu">
-                  <li><a href="#"><i class="icon ion-person"></i> My Account</a></li>
-                  <li><a href="#"><i class="icon ion-heart"></i> Favorite</a></li>
-                  <li><a href="#"><i class="icon ion-chatbox"></i> Comments</a></li>
-                  <li><a href="#"><i class="icon ion-key"></i> Change Password</a></li>
-                  <li><a href="#"><i class="icon ion-settings"></i> Settings</a></li>
+                  <li><a href="profile.php?id=<?php echo $_SESSION['user_id'] ?>"><i class="icon ion-person"></i> My Account</a></li>
+                  <li><a href="profile_form.php?id=<?php echo $_SESSION['user_id'] ?>"><i class="icon ion-settings"></i> Update Profile</a></li>
                   <li class="divider"></li>
-                  <li><a href="#"><i class="icon ion-log-out"></i> Logout</a></li>
+                  <li><a href="logout.php"><i class="icon ion-log-out"></i> Logout</a></li>
                 </ul>
               </li>
+              <?php } ?>
             </ul>
           </div>
         </div>
