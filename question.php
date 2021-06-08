@@ -9,6 +9,9 @@
   $data = json_decode(CallAPI('GET', '/questions/'.$params['id'], $_SESSION['loggedin'], $authenticated_data))->data;
   $cates = CallAPI('GET', '/categories');
   $cate_groups = json_decode(CallAPI('GET', '/categories/groups'))->data;
+  $latest_data = json_decode(CallAPI('GET', '/questions/latest', $_SESSION['loggedin'], $authenticated_data))->data;
+  $latest_questions = $latest_data->questions;
+  $recent = $latest_questions[0];
 ?>
 <!DOCTYPE html>
 <html>
@@ -126,6 +129,7 @@
               <li class="for-tablet"><a href="login.php">Login</a></li>
               <li class="for-tablet"><a href="register.php">Register</a></li>
               <li><a href="index.php">Home</a></li>
+              <li><a href="tags.php">Tags</a></li>
               <li class="dropdown magz-dropdown magz-dropdown-megamenu"><a href="#">Category <i class="ion-ios-arrow-right"></i></a>
                 <div class="dropdown-menu megamenu">
                   <div class="megamenu-inner">
@@ -171,72 +175,43 @@
                 <article class="article-fw">
                   <div class="inner">
                     <figure>
-                      <a href="question.php">                        
-                        <img src="images/news/img16.jpg">
+                      <a href="question.php?id=<?php echo $recent->id ?>">                        
+                        <img src="<?php echo $api.$recent->image ?>">
                       </a>
                     </figure>
                     <div class="details">
-                      <h1><a href="question.php">Lorem Ipsum Dolor Sit Amet Consectetur Adipisicing Elit</a></h1>
+                      <h1><a href="question.php?id=<?php echo $recent->id ?>"><?php echo $recent->excerpt ?></a></h1>
                       <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                      tempor incididunt ut labore et dolore magna aliqua.
+                      <?php echo $recent->content ?>
                       </p>
                       <div class="detail">
-                        <div class="time">December 26, 2016</div>
-                        <div class="category"><a href="category.html">Lifestyle</a></div>
+                        <div class="time"><?php echo $recent->created_at ?></div>
+                        <div class="category"><a href="category.php?id=<?php echo $recent->category->id ?>"><?php echo $recent->category->name ?></a></div>
                       </div>
                     </div>
                   </div>
                 </article>
                 <div class="line"></div>
+                <?php foreach($latest_questions as $key=>$value) { ?>
+                <?php if ($key != 1) { ?>
                 <article class="article-mini">
                   <div class="inner">
                     <figure>
-                      <a href="question.php">
-                        <img src="images/news/img05.jpg">
+                      <a href="question.php?id=<?php echo $value->id ?>">
+                        <img src="<?php echo $api.$value->image ?>">
                       </a>
                     </figure>
                     <div class="padding">
-                      <h1><a href="question.php">Duis aute irure dolor in reprehenderit in voluptate velit</a></h1>
+                      <h1><a href="question.php?id=<?php echo $value->id ?>"><?php echo $value->excerpt ?></a></h1>
                       <div class="detail">
-                        <div class="category"><a href="category.html">Lifestyle</a></div>
-                        <div class="time">December 22, 2016</div>
+                        <div class="category"><a href="category.php?id=<?php echo $value->category->id ?>"><?php echo $value->category->name ?></a></div>
+                        <div class="time"><?php echo $value->created_at ?></div>
                       </div>
                     </div>
                   </div>
                 </article>
-                <article class="article-mini">
-                  <div class="inner">
-                    <figure>
-                      <a href="question.php">
-                        <img src="images/news/img02.jpg">
-                      </a>
-                    </figure>
-                    <div class="padding">
-                      <h1><a href="question.php">Fusce ullamcorper elit at felis cursus suscipit</a></h1>
-                      <div class="detail">
-                        <div class="category"><a href="category.html">Travel</a></div>
-                        <div class="time">December 21, 2016</div>
-                      </div>
-                    </div>
-                  </div>
-                </article>
-                <article class="article-mini">
-                  <div class="inner">
-                    <figure>
-                      <a href="question.php">
-                        <img src="images/news/img13.jpg">
-                      </a>
-                    </figure>
-                    <div class="padding">
-                      <h1><a href="question.php">Duis aute irure dolor in reprehenderit in voluptate velit</a></h1>
-                      <div class="detail">
-                        <div class="category"><a href="category.html">International</a></div>
-                        <div class="time">December 20, 2016</div>
-                      </div>
-                    </div>
-                  </div>
-                </article>
+                <?php } ?>
+                <?php } ?>
               </div>
             </aside>
           </div>
@@ -248,8 +223,8 @@
             <article class="article main-article">
               <header>
                 <ul class="details">
-                  <li><?php echo $data->created_at ?></li>
-                  <li><a>Question</a></li>
+                  <li>POSTED ON <?php echo $data->created_at ?></li>
+                  <li><a href="category.php?id=<?php echo $data->category->id ?>"><?php echo $data->category->name ?></a></li>
                   <li>By <a href="profile.php?id=<?php echo $data->creator->id ?>"><?php echo $data->creator->name ?></a></li>
                 </ul>
               </header>
@@ -278,40 +253,6 @@
                 </div>
               </footer>
             </article>
-            <div class="sharing">
-            <div class="title"><i class="ion-android-share-alt"></i> Sharing is caring</div>
-              <ul class="social">
-                <li>
-                  <a href="#" class="facebook">
-                    <i class="ion-social-facebook"></i> Facebook
-                  </a>
-                </li>
-                <li>
-                  <a href="#" class="twitter">
-                    <i class="ion-social-twitter"></i> Twitter
-                  </a>
-                </li>
-                <li>
-                  <a href="#" class="googleplus">
-                    <i class="ion-social-googleplus"></i> Google+
-                  </a>
-                </li>
-                <li>
-                  <a href="#" class="linkedin">
-                    <i class="ion-social-linkedin"></i> Linkedin
-                  </a>
-                </li>
-                <li>
-                  <a href="#" class="skype">
-                    <i class="ion-ios-email-outline"></i> Email
-                  </a>
-                </li>
-                <li class="count">
-                  20
-                  <div>Shares</div>
-                </li>
-              </ul>
-            </div>
             <div class="line">
               <div>Author</div>
             </div>
@@ -321,69 +262,8 @@
               </figure>
               <div class="details">
                 <!-- <div class="job">Web Developer</div> -->
-                <h3 class="name"><?php echo $data->creator->name?></h3>
-                <ul class="social trp sm">
-                  <li>
-                    <a href="#" class="facebook">
-                      <svg><rect/></svg>
-                      <i class="ion-social-facebook"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" class="twitter">
-                      <svg><rect/></svg>
-                      <i class="ion-social-twitter"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" class="youtube">
-                      <svg><rect/></svg>
-                      <i class="ion-social-youtube"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" class="googleplus">
-                      <svg><rect/></svg>
-                      <i class="ion-social-googleplus"></i>
-                    </a>
-                  </li>
-                </ul>
+                <h2 class="name"><?php echo $data->creator->name?></h2>
               </div>
-            </div>
-            <div class="line"><div>You May Also Like</div></div>
-            <div class="row">
-              <article class="article related col-md-6 col-sm-6 col-xs-12">
-                <div class="inner">
-                  <figure>
-                    <a href="#">
-                      <img src="images/news/img03.jpg">
-                    </a>
-                  </figure>
-                  <div class="padding">
-                    <h2><a href="#">Duis aute irure dolor in reprehenderit in voluptate</a></h2>
-                    <div class="detail">
-                      <div class="category"><a href="category.html">Lifestyle</a></div>
-                      <div class="time">December 26, 2016</div>
-                    </div>
-                  </div>
-                </div>
-              </article>
-              <article class="article related col-md-6 col-sm-6 col-xs-12">
-                <div class="inner">
-                  <figure>
-                    <a href="#">
-                      <img src="images/news/img08.jpg">
-                    </a>
-                  </figure>
-                  <div class="padding">
-                    <h2><a href="#">Duis aute irure dolor in reprehenderit in voluptate</a></h2>
-                    <div class="detail">
-                      <div class="category"><a href="category.html">Lifestyle</a></div>
-                      <div class="time">December 26, 2016</div>
-                    </div>
-                  </div>
-                </div>
-              </article>
             </div>
             <div class="line thin"></div>
             <div class="comments">
@@ -432,196 +312,11 @@
     <footer class="footer">
       <div class="container">
         <div class="row">
-          <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="block">
-              <h1 class="block-title">Company Info</h1>
-              <div class="block-body">
-                <figure class="foot-logo">
-                  <img src="images/logo-light.png" class="img-responsive" alt="Logo">
-                </figure>
-                <p class="brand-description">
-                  Magz is a HTML5 &amp; CSS3 magazine template based on Bootstrap 3.
-                </p>
-                <a href="page.html" class="btn btn-magz white">About Us <i class="ion-ios-arrow-thin-right"></i></a>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="block">
-              <h1 class="block-title">Popular Tags <div class="right"><a href="#">See All <i class="ion-ios-arrow-thin-right"></i></a></div></h1>
-              <div class="block-body">
-                <ul class="tags">
-                  <li><a href="#">HTML5</a></li>
-                  <li><a href="#">CSS3</a></li>
-                  <li><a href="#">Bootstrap 3</a></li>
-                  <li><a href="#">Web Design</a></li>
-                  <li><a href="#">Creative Mind</a></li>
-                  <li><a href="#">Standing On The Train</a></li>
-                  <li><a href="#">at 6.00PM</a></li>
-                </ul>
-              </div>
-            </div>
-            <div class="line"></div>
-            <div class="block">
-              <h1 class="block-title">Newsletter</h1>
-              <div class="block-body">
-                <p>By subscribing you will receive new articles in your email.</p>
-                <form class="newsletter">
-                  <div class="input-group">
-                    <div class="input-group-addon">
-                      <i class="ion-ios-email-outline"></i>
-                    </div>
-                    <input type="email" class="form-control email" placeholder="Your mail">
-                  </div>
-                  <button class="btn btn-primary btn-block white">Subscribe</button>
-                </form>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 col-sm-6 col-xs-12">
-            <div class="block">
-              <h1 class="block-title">Latest News</h1>
-              <div class="block-body">
-                <article class="article-mini">
-                  <div class="inner">
-                    <figure>
-                      <a href="question.php">
-                        <img src="images/news/img12.jpg" alt="Sample Article">
-                      </a>
-                    </figure>
-                    <div class="padding">
-                      <h1><a href="question.php">Donec consequat lorem quis augue pharetra</a></h1>
-                    </div>
-                  </div>
-                </article>
-                <article class="article-mini">
-                  <div class="inner">
-                    <figure>
-                      <a href="question.php">
-                        <img src="images/news/img14.jpg" alt="Sample Article">
-                      </a>
-                    </figure>
-                    <div class="padding">
-                      <h1><a href="question.php">eu dapibus risus aliquam etiam ut venenatis</a></h1>
-                    </div>
-                  </div>
-                </article>
-                <article class="article-mini">
-                  <div class="inner">
-                    <figure>
-                      <a href="question.php">
-                        <img src="images/news/img15.jpg" alt="Sample Article">
-                      </a>
-                    </figure>
-                    <div class="padding">
-                      <h1><a href="question.php">Nulla facilisis odio quis gravida vestibulum </a></h1>
-                    </div>
-                  </div>
-                </article>
-                <article class="article-mini">
-                  <div class="inner">
-                    <figure>
-                      <a href="question.php">
-                        <img src="images/news/img16.jpg" alt="Sample Article">
-                      </a>
-                    </figure>
-                    <div class="padding">
-                      <h1><a href="question.php">Proin venenatis pellentesque arcu vitae </a></h1>
-                    </div>
-                  </div>
-                </article>
-                <a href="#" class="btn btn-magz white btn-block">See All <i class="ion-ios-arrow-thin-right"></i></a>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 col-xs-12 col-sm-6">
-            <div class="block">
-              <h1 class="block-title">Follow Us</h1>
-              <div class="block-body">
-                <p>Follow us and stay in touch to get the latest news</p>
-                <ul class="social trp">
-                  <li>
-                    <a href="#" class="facebook">
-                      <svg><rect width="0" height="0"/></svg>
-                      <i class="ion-social-facebook"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" class="twitter">
-                      <svg><rect width="0" height="0"/></svg>
-                      <i class="ion-social-twitter-outline"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" class="youtube">
-                      <svg><rect width="0" height="0"/></svg>
-                      <i class="ion-social-youtube-outline"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" class="googleplus">
-                      <svg><rect width="0" height="0"/></svg>
-                      <i class="ion-social-googleplus"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" class="instagram">
-                      <svg><rect width="0" height="0"/></svg>
-                      <i class="ion-social-instagram-outline"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" class="tumblr">
-                      <svg><rect width="0" height="0"/></svg>
-                      <i class="ion-social-tumblr"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" class="dribbble">
-                      <svg><rect width="0" height="0"/></svg>
-                      <i class="ion-social-dribbble"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" class="linkedin">
-                      <svg><rect width="0" height="0"/></svg>
-                      <i class="ion-social-linkedin"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" class="skype">
-                      <svg><rect width="0" height="0"/></svg>
-                      <i class="ion-social-skype"></i>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" class="rss">
-                      <svg><rect width="0" height="0"/></svg>
-                      <i class="ion-social-rss"></i>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class="line"></div>
-            <div class="block">
-              <div class="block-body no-margin">
-                <ul class="footer-nav-horizontal">
-                  <li><a href="index.html">Home</a></li>
-                  <li><a href="#">Partner</a></li>
-                  <li><a href="contact.html">Contact</a></li>
-                  <li><a href="page.html">About</a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
           <div class="col-md-12">
             <div class="copyright">
-              COPYRIGHT &copy; MAGZ 2017. ALL RIGHT RESERVED.
+              COPYRIGHT &copy; eMagazine. ALL RIGHT RESERVED.
               <div>
-                Made with <i class="ion-heart"></i> by <a href="http://kodinger.com">Kodinger</a>
+                Made with <i class="ion-heart"></i> by DaiHo
               </div>
             </div>
           </div>
