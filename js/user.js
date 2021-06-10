@@ -49,12 +49,18 @@ $('#register-form #btn-submit').on('click', function() {
 
 $('#user-form #btn-submit').on('click', function() {
   let token = $('#user-form .token').val();
+  let user_id = $('#user-form .id').val();
+  let current_user_id = $('#user-form .current_id').val();
   let user_name = $('#user-form .name').val();
+  let user_admin = $('#user-form .is-admin')[0].checked;
   let user_password = $('#user-form .password').val();
   let user_email = $('#user-form .email').val();
+  let user_for_admin = $('#user-form .admin_update').val();
   let user_avatar = $('#user-form .avatar')[0].files[0];
   let form_data = new FormData();
+  form_data.append('user[id]', user_id);
   form_data.append('user[name]', user_name);
+  form_data.append('user[is_admin]', user_admin);
   form_data.append('user[password]', user_password);
   form_data.append('user[email]', user_email);
   form_data.append('user[avatar]', user_avatar);
@@ -68,8 +74,13 @@ $('#user-form #btn-submit').on('click', function() {
     data: form_data,
     success: function(response) {
       console.log(response.user);
-      $.post('setsessionvariable.php', response.user);
-      window.location.href = `profile.php?id=${response.user.id}`
+      if (user_for_admin) {
+        if (current_user_id == user_id) { $.post('setsessionvariable.php', response.user); }
+        window.location.href = `manage_users.php`
+      } else {
+        $.post('setsessionvariable.php', response.user);
+        window.location.href = `profile.php?id=${response.user.id}`
+      }
     },
     error: function(error) {
       console.log(error.responseJSON);

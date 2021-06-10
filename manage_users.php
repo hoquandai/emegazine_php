@@ -1,14 +1,12 @@
 <?php
   session_start();
-  if (!$_SESSION['loggedin']) { header("Location: index.php"); }
-  parse_str($_SERVER['QUERY_STRING'], $params);
-  $admin_update = $params['admin'];
-  if (!$_SESSION['user_admin'] && $_SESSION['user_id'] != $params['id']) { header("Location: index.php"); }
   require_once("api/call.php");
   $username = $_SESSION['user_name'] ? $_SESSION['user_name'] : '';
+  $authenticated_data = $_SESSION['loggedin'] ? array("authenticated" => true) : array();
+  parse_str($_SERVER['QUERY_STRING'], $params);
   $cates = CallAPI('GET', '/categories');
   $cate_groups = json_decode(CallAPI('GET', '/categories/groups'))->data;
-  $user = json_decode(CallAPI('GET', '/user?id='.$params['id']))->data->user;
+  $users = json_decode(CallAPI('GET', '/user/list'))->data;
 ?>
 <!DOCTYPE html>
 <html>
@@ -161,50 +159,47 @@
       <!-- End nav -->
     </header>
 
-    <section class="login first grey">
+    <section>
       <div class="container">
-        <div class="box-wrapper">       
-          <div class="box box-border">
-            <div class="box-body">
-              <h4>User Info</h4>
-              <div id="user-form">
-                <input class="form-control token" name="token" type="hidden" value="<?php echo $_SESSION['user_token'] ?>"></input>
-                <input class="form-control id" name="id" type="hidden" value="<?php echo $user->id ?>"></input>
-                <input class="form-control current_id" name="current_id" type="hidden" value="<?php echo $_SESSION['user_id'] ?>"></input>
-                <input class="form-control admin_update" name="admin_update" type="hidden" value="<?php echo $admin_update ?>"></input>
-                <div class="form-group">
-                  <label>Username</label>
-                  <input type="text" name="name" class="form-control name" value="<?php echo $user->name ?>">
+        <aside>
+          <div class="aside-body">
+            <div class="featured-author">
+              <div class="featured-author-inner">
+                <div class="featured-author-cover" style="background-image: url('images/news/img15.jpg');">
+                  <div class="badges">
+                    <div class="badge-item">Admin / Users</div>
+                  </div>
                 </div>
-                <div class="form-group">
-                  <label>Email</label>
-                  <input disabled type="email" name="email" class="form-control email" value="<?php echo $user->email ?>">
-                </div>
-                <div class="form-group">
-                  <label class="fw">Password</label>
-                  <input type="password" name="password" class="form-control password">
-                </div>
-                <?php if ($_SESSION['user_admin'] && $admin_update) { ?>
-                <div class="form-group">
-                  <label for="is-admin">Is Admin</label>
-                  <?php if ($user->is_admin) { ?>
-                  <input type="checkbox" class="form-control is-admin" name="is-admin" checked>
-                  <?php } else { ?>
-                  <input type="checkbox" class="form-control is-admin" name="is-admin">
-                  <?php } ?>
-                </div>
-                <?php } ?>
-                <div class="form-group">
-                  <label for="avatar">Choose a profile picture</label>
-                  <input type="file" class="form-control avatar" id="avatar" name="avatar" accept="image/png, image/jpeg">
-                </div>
-                <div class="form-group text-right">
-                  <button id="btn-submit" type="button" class="btn btn-primary btn-block">Update</button>
+                <div class="featured-author-body">
+                  <div class="block">
+                    <div class="block-body">
+                      <table>
+                        <tr>
+                          <th>ID</th>
+                          <th>Name</th>
+                          <th>Email</th>
+                          <th>Score</th>
+                          <th>Is Admin</th>
+                          <th>Edit</th>
+                        </tr>
+                        <?php foreach($users as $key=>$value) { ?>
+                        <tr>
+                          <td><?php echo $value->id ?></td>
+                          <td><a href="profile.php?id=<?php echo $value->id ?>"><?php echo $value->name ?></td>
+                          <td><?php echo $value->email ?></td>
+                          <td><?php echo $value->score ?></td>
+                          <td><?php echo $value->is_admin ? 'TRUE' : 'FALSE' ?></td>
+                          <td><a href="profile_form.php?id=<?php echo $value->id ?>&admin=true"><i class="icon ion-edit"></i></a></td>
+                        </tr>
+                        <?php } ?>
+                      </table>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </aside>
       </div>
     </section>
 
@@ -238,7 +233,5 @@
     <script src="scripts/toast/jquery.toast.min.js"></script>
     <script src="js/demo.js"></script>
     <script src="js/e-magz.js"></script>
-    <script src="js/application.js"></script>
-    <script src="js/user.js"></script>
   </body>
 </html>
