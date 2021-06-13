@@ -1,11 +1,15 @@
 <?php
   session_start();
   require_once("api/call.php");
+  $cates = json_decode(CallAPI('GET', '/categories'))->data;
   $username = $_SESSION['user_name'] ? $_SESSION['user_name'] : '';
-  $authenticated_data = $_SESSION['loggedin'] ? array("authenticated" => true) : array();
-  parse_str($_SERVER['QUERY_STRING'], $params);
-  $categories = json_decode(CallAPI('GET', '/categories'))->data;
   $cate_groups = json_decode(CallAPI('GET', '/categories/groups'))->data;
+  parse_str($_SERVER['QUERY_STRING'], $params);
+  $is_update = $params['id'] ? true : false;
+  $title = $is_update == true ? 'Create' : 'Update';
+  $category = $is_update ? json_decode(CallAPI('GET', '/categories/'.$params['id']))->data : false;
+  $cate_name = $category ? $category->name : '';
+  $cate_desc = $category ? $category->description : '';
 ?>
 <!DOCTYPE html>
 <html>
@@ -41,7 +45,6 @@
   </head>
 
   <body>
-    <input id="user_token" type="hidden" name="token" value="<?php echo $_SESSION['user_token'] ?>"></input>
     <header class="primary">
       <div class="firstbar">
         <div class="container">
@@ -67,8 +70,9 @@
                   <div>Popular:</div>
                   <ul>
                     <?php
-                      if (!empty($categories)) { 
-                        foreach($categories as $key=>$value){
+                      
+                      if (!empty($cates)) { 
+                        foreach($cates as $key=>$value){
                     ?>
                       <li><a href="category.php?id=<?php echo $value->id ?>"><?php echo $value->name ?></a></li>
                     <?php
@@ -156,46 +160,53 @@
       </nav>
       <!-- End nav -->
     </header>
-
-    <section>
+    <section class="page">
       <div class="container">
-        <aside>
-          <div class="aside-body">
-            <div class="featured-author">
-              <div class="featured-author-inner">
-                <div class="featured-author-cover" style="background-image: url('images/news/img15.jpg');">
-                  <div class="badges">
-                    <div class="badge-item"><a href="category_form.php"><i class="icon ion-android-add-circle"></i>Add Category</a></div>
-                  </div>
+        <div class="row">
+          <div class="col-md-12">
+            <ol class="breadcrumb">
+              <li><a href="manage_categories.php">Manage Category</a></li>
+              <li class="active"><?php echo $title ?></li>
+            </ol>
+            <h1 class="page-title"><?php echo $title ?></h1>
+            <p class="page-subtitle">Manage question categories</p>
+            <div class="line thin"></div>
+            <div class="page-description">
+              <div class="row">
+                <div class="col-md-6 col-sm-6">
+                  <h3>Category</h3>
+                  <p>
+                    A category should have a meaning description!
+                  </p>
+                  <p>
+                    Have a nice day!
+                  </p>
                 </div>
-                <div class="featured-author-body">
-                  <div class="block">
-                    <div class="block-body">
-                      <table>
-                        <tr>
-                          <th>ID</th>
-                          <th>Name</th>
-                          <th>Description</th>
-                          <th>Edit</th>
-                          <th>Delete</th>
-                        </tr>
-                        <?php foreach($categories as $key=>$value) { ?>
-                        <tr>
-                          <td><?php echo $value->id ?></td>
-                          <td><a href="category.php?id=<?php echo $value->id ?>"><?php echo $value->name ?></td>
-                          <td><?php echo $value->description ?></td>
-                          <td><a href="category_form.php?id=<?php echo $value->id ?>&admin=true"><i class="icon ion-edit"></i></a></td>
-                          <td><a href="javascript();" class="category_remove" data-id="<?php echo $value->id ?>"><i class="icon ion-trash-b"></i></a></td>
-                        </tr>
-                        <?php } ?>
-                      </table>
+                <div class="col-md-6 col-sm-6">
+                  <form class="row contact" id="category-form">
+                    <input class="form-control token" name="token" type="hidden" value="<?php echo $_SESSION['user_token'] ?>"></input>
+                    <input class="form-control id" name="id" type="hidden" value="<?php echo $params['id'] ?>"></input>
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label>Name <span class="required"></span></label>
+                        <input class="form-control name" name="name" required="" type="text" value="<?php echo $cate_name ?>"></input>
+                      </div>
                     </div>
-                  </div>
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label>Description <span class="required"></span></label>
+                        <textarea class="form-control description" name="description" required="" value="<?php echo $cate_desc ?>"></textarea>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <button type="button" class="btn btn-primary submit">Submit</button>
+                    </div>
+                  </form>
                 </div>
               </div>
             </div>
           </div>
-        </aside>
+        </div>
       </div>
     </section>
 

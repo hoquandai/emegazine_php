@@ -4,6 +4,22 @@
   $cates = json_decode(CallAPI('GET', '/categories'))->data;
   $username = $_SESSION['user_name'] ? $_SESSION['user_name'] : '';
   $cate_groups = json_decode(CallAPI('GET', '/categories/groups'))->data;
+  parse_str($_SERVER['QUERY_STRING'], $params);
+  $is_update = $params['id'] ? true : false;
+  $title = $is_update ? 'Update' : 'Create';
+  $question = $params['id'] ? json_decode(CallAPI('GET', '/questions/'.$params['id']))->data : false;
+  $q_id = $question ? $question->id : '';
+  $q_excerpt = $question ? $question->excerpt : '';
+  $q_content = $question ? $question->content : '';
+  $q_category = $question ? $question->category->id : '';
+  $q_tags = '';
+  if ($question) {
+    $arr=array();
+    foreach($question->tags as $key=>$value) {
+      array_push($arr, $value->name);
+    }
+    $q_tags = implode(",", $arr);
+  }
 ?>
 <!DOCTYPE html>
 <html>
@@ -181,16 +197,17 @@
                   <form class="row contact" id="question-form">
                     <input class="form-control token" name="token" type="hidden" value="<?php echo $_SESSION['user_token'] ?>"></input>
                     <input class="form-control userid" name="userid" type="hidden" value="<?php echo $_SESSION['user_id'] ?>"></input>
+                    <input class="form-control id" name="id" type="hidden" value="<?php echo $q_id ?>"></input>
                     <div class="col-md-12">
                       <div class="form-group">
                         <label>Excerpt <span class="required"></span></label>
-                        <input class="form-control excerpt" name="excerpt" required="" type="text"></input>
+                        <input class="form-control excerpt" name="excerpt" required="" type="text" value="<?php echo $q_excerpt?>"></input>
                       </div>
                     </div>
                     <div class="col-md-12">
                       <div class="form-group">
                         <label>Content <span class="required"></span></label>
-                        <textarea class="form-control content" name="content" required=""></textarea>
+                        <textarea class="form-control content" name="content" required=""><?php echo $q_content?></textarea>
                       </div>
                     </div>
                     <div class="col-md-12">
@@ -201,7 +218,11 @@
                             if (!empty($cates)) { 
                               foreach($cates as $key=>$value){
                           ?>
-                            <option value="<?php echo $value->id ?>"><?php echo $value->name ?></option>
+                            <?php if ($q_category == $value->id) { ?>
+                              <option value="<?php echo $value->id ?>" selected><?php echo $value->name ?></option>
+                            <?php } else { ?>
+                              <option value="<?php echo $value->id ?>"><?php echo $value->name ?></option>
+                            <?php } ?>
                           <?php
                               }
                             }
@@ -212,7 +233,7 @@
                     <div class="col-md-12">
                       <div class="form-group">
                         <label>Tags <span class="required"></span></label>
-                        <input class="form-control tags" name="tag" required="" type="text" placeholder="tag1, tag2"></input>
+                        <input class="form-control tags" name="tag" required="" type="text" placeholder="tag1, tag2" value="<?php echo $q_tags?>"></input>
                       </div>
                     </div>
                     <div class="form-group">

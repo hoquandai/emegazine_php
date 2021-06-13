@@ -3,10 +3,8 @@
   require_once("api/call.php");
   $username = $_SESSION['user_name'] ? $_SESSION['user_name'] : '';
   $authenticated_data = $_SESSION['loggedin'] ? array("authenticated" => true) : array();
-  parse_str($_SERVER['QUERY_STRING'], $params);
-  $cates = CallAPI('GET', '/categories');
-  $cate_groups = json_decode(CallAPI('GET', '/categories/groups'))->data;
-  $tags = json_decode(CallAPI('GET', '/tags'))->data;
+  $categories = json_decode(CallAPI('GET', '/categories'))->data;
+  $questions = json_decode(CallAPI('GET', '/questions'))->data;
 ?>
 <!DOCTYPE html>
 <html>
@@ -42,6 +40,7 @@
   </head>
 
   <body>
+    <input id="user_token" type="hidden" name="token" value="<?php echo $_SESSION['user_token'] ?>"></input>
     <header class="primary">
       <div class="firstbar">
         <div class="container">
@@ -67,10 +66,8 @@
                   <div>Popular:</div>
                   <ul>
                     <?php
-                      $categories = json_decode($cates);
-                      $categories_data = $categories->data;
-                      if (!empty($categories_data)) { 
-                        foreach($categories_data as $key=>$value){
+                      if (!empty($categories)) { 
+                        foreach($categories as $key=>$value){
                     ?>
                       <li><a href="category.php?id=<?php echo $value->id ?>"><?php echo $value->name ?></a></li>
                     <?php
@@ -167,7 +164,7 @@
               <div class="featured-author-inner">
                 <div class="featured-author-cover" style="background-image: url('images/news/img15.jpg');">
                   <div class="badges">
-                    <div class="badge-item"><i class="ion-star"></i>Featured Tags</div>
+                    <div class="badge-item"><a href="category_form.php"><i class="icon ion-android-add-circle"></i>Add Category</a></div>
                   </div>
                 </div>
                 <div class="featured-author-body">
@@ -175,13 +172,23 @@
                     <div class="block-body">
                       <table>
                         <tr>
-                          <th>Name</th>
-                          <th>Questions Count</th>
+                          <th>ID</th>
+                          <th>Excerpt</th>
+                          <th>Content</th>
+                          <th>Visible?</th>
+                          <th>Delete</th>
                         </tr>
-                        <?php foreach($tags as $key=>$value) { ?>
-                        <tr>
-                          <td><a href="questions.php?tag=<?php echo $value->name ?>"><?php echo $value->name ?></td>
-                          <td><?php echo $value->taggings_count ?></td>
+                        <?php foreach($questions as $key=>$value) { ?>
+                        <tr id="question-<?php echo $value->id ?>">
+                          <td><a href="question.php?id=<?php echo $value->id ?>"><?php echo $value->id ?></a></td>
+                          <td><?php echo $value->excerpt ?></td>
+                          <td><?php echo $value->content ?></td>
+                          <?php if ($value->visible) { ?>
+                            <td><input type='checkbox' class="manage visibility" data-id="<?php echo $value->id ?>" checked></input></td>
+                          <?php } else { ?>
+                            <td><input type='checkbox' class="manage visibility" data-id="<?php echo $value->id ?>"></input></td>
+                          <?php } ?>
+                          <td><a href="javascript();" class="manage question_remove" data-id="<?php echo $value->id ?>"><i class="icon ion-trash-b"></i></a></td>
                         </tr>
                         <?php } ?>
                       </table>
@@ -225,5 +232,7 @@
     <script src="scripts/toast/jquery.toast.min.js"></script>
     <script src="js/demo.js"></script>
     <script src="js/e-magz.js"></script>
+    <script src="js/application.js"></script>
+    <script src="js/questions.js"></script>
   </body>
 </html>

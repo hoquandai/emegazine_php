@@ -1,5 +1,7 @@
 $('#question-form button.submit').on('click', function() {
   let token = $('#question-form .token').val();
+  let id = $('#question-form .id').val();
+  let method = id != '' ? 'PUT' : 'POST';
 
   let userId = $('#question-form .userid').val();
   let excerpt = $('#question-form .excerpt').val();
@@ -14,11 +16,12 @@ $('#question-form button.submit').on('click', function() {
   form_data.append('question[category_id]', categoryId);
   form_data.append('question[tag_list]', tags);
   form_data.append('question[user_id]', userId);
-  form_data.append('question[image]', image);
+  if (image) { form_data.append('question[image]', image); }
+
   $.ajax({
     headers: { "Authorization": "Token " + token },
-    method: 'POST',
-    url: `${api_host}/questions`,
+    method: method,
+    url: `${api_host}/questions/${id}`,
     processData: false,
     enctype: 'multipart/form-data',
     contentType: false,
@@ -81,3 +84,45 @@ $('form#reply .submit').on('click', function() {
     }
   });
 });
+
+$('.manage.visibility').on('click', function(e) {
+  let token = $('#user_token').val();
+  let id = $(this).data('id');
+  let checked = $(this)[0].checked ? 1 : 0;
+  $.ajax({
+    headers: { "Authorization": "Token " + token },
+    method: 'PUT',
+    url: `${api_host}/questions/${id}`,
+    data: {
+      question: {
+        visible: checked
+      }
+    },
+    success: function(response) {
+     // window.location.href = `manage_questions.php`
+
+    },
+    error: function(error) {
+      console.log(error.responseJSON);
+    }
+  });
+})
+
+$('.manage.question_remove').on('click', function(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  let token = $('#user_token').val();
+  let id = $(this).data('id');
+  $.ajax({
+    headers: { "Authorization": "Token " + token },
+    method: 'DELETE',
+    url: `${api_host}/questions/${id}`,
+    success: function(response) {
+     $(`#question-${id}`).remove();
+
+    },
+    error: function(error) {
+      console.log(error.responseJSON);
+    }
+  });
+})
