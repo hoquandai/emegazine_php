@@ -1,12 +1,13 @@
 <?php
   session_start();
+  if (!$_SESSION['user_admin']) { header("Location: index.php"); }
   require_once("api/call.php");
   $cates = json_decode(CallAPI('GET', '/categories'))->data;
   $username = $_SESSION['user_name'] ? $_SESSION['user_name'] : '';
   $cate_groups = json_decode(CallAPI('GET', '/categories/groups'))->data;
   parse_str($_SERVER['QUERY_STRING'], $params);
   $is_update = $params['id'] ? true : false;
-  $title = $is_update == true ? 'Create' : 'Update';
+  $title = $is_update == true ? 'Update' : 'Create';
   $category = $is_update ? json_decode(CallAPI('GET', '/categories/'.$params['id']))->data : false;
   $cate_name = $category ? $category->name : '';
   $cate_desc = $category ? $category->description : '';

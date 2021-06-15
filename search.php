@@ -1,14 +1,15 @@
 <?php
   session_start();
-  if (!$_SESSION['loggedin']) { header("Location: index.php"); }
-  parse_str($_SERVER['QUERY_STRING'], $params);
-  $admin_update = $params['admin'];
-  if (!$_SESSION['user_admin'] && $_SESSION['user_id'] != $params['id']) { header("Location: index.php"); }
+  $api = 'http://localhost:3000';
   require_once("api/call.php");
-  $username = $_SESSION['user_name'] ? $_SESSION['user_name'] : '';
   $cates = CallAPI('GET', '/categories');
   $cate_groups = json_decode(CallAPI('GET', '/categories/groups'))->data;
-  $user = json_decode(CallAPI('GET', '/user?id='.$params['id']))->data->user;
+  parse_str($_SERVER['QUERY_STRING'], $params);
+  $authenticated_data = $_SESSION['loggedin'] ? array("authenticated" => true) : array();
+  $payload = array_merge($authenticated_data, array("q" => $params['q']));
+  $data = json_decode(CallAPI('GET', '/questions/search',  $_SESSION['loggedin'], $payload))->data;
+  $likes = $data->likes;
+  $questions = $data->questions;
 ?>
 <!DOCTYPE html>
 <html>
@@ -37,6 +38,8 @@
     <!-- Magnific Popup -->
     <link rel="stylesheet" href="scripts/magnific-popup/dist/magnific-popup.css">
     <link rel="stylesheet" href="scripts/sweetalert/dist/sweetalert.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="scripts/icheck/skins/all.css">
     <!-- Custom style -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/skins/all.css">
@@ -44,6 +47,7 @@
   </head>
 
   <body>
+    <input id="user_token" type="hidden" name="token" value="<?php echo $_SESSION['user_token'] ?>"></input>
     <header class="primary">
       <div class="firstbar">
         <div class="container">
@@ -56,7 +60,7 @@
               </div>            
             </div>
             <div class="col-md-6 col-sm-12">
-              <form class="search" autocomplete="off">
+              <form class="search" action="search.php" autocomplete="off">
                 <div class="form-group">
                   <div class="input-group">
                     <input type="text" name="q" class="form-control" placeholder="Type something here">                 
@@ -166,47 +170,69 @@
       <!-- End nav -->
     </header>
 
-    <section class="login first grey">
+    <section class="search">
       <div class="container">
-        <div class="box-wrapper">       
-          <div class="box box-border">
-            <div class="box-body">
-              <h4>User Info</h4>
-              <div id="user-form">
-                <input class="form-control token" name="token" type="hidden" value="<?php echo $_SESSION['user_token'] ?>"></input>
-                <input class="form-control id" name="id" type="hidden" value="<?php echo $user->id ?>"></input>
-                <input class="form-control current_id" name="current_id" type="hidden" value="<?php echo $_SESSION['user_id'] ?>"></input>
-                <input class="form-control admin_update" name="admin_update" type="hidden" value="<?php echo $admin_update ?>"></input>
-                <div class="form-group">
-                  <label>Username</label>
-                  <input type="text" name="name" class="form-control name" value="<?php echo $user->name ?>">
-                </div>
-                <div class="form-group">
-                  <label>Email</label>
-                  <input disabled type="email" name="email" class="form-control email" value="<?php echo $user->email ?>">
-                </div>
-                <div class="form-group">
-                  <label class="fw">Password</label>
-                  <input type="password" name="password" class="form-control password">
-                </div>
-                <?php if ($_SESSION['user_admin'] && $admin_update) { ?>
-                <div class="form-group">
-                  <label for="is-admin">Is Admin</label>
-                  <?php if ($user->is_admin) { ?>
-                  <input type="checkbox" class="form-control is-admin" name="is-admin" checked>
-                  <?php } else { ?>
-                  <input type="checkbox" class="form-control is-admin" name="is-admin">
-                  <?php } ?>
-                </div>
-                <?php } ?>
-                <div class="form-group">
-                  <label for="avatar">Choose a profile picture</label>
-                  <input type="file" class="form-control avatar" id="avatar" name="avatar" accept="image/png, image/jpeg">
-                </div>
-                <div class="form-group text-right">
-                  <button id="btn-submit" type="button" class="btn btn-primary btn-block">Update</button>
-                </div>
+        <div class="row">
+          <div class="col-md-3">
+            <aside>
+              <h2 class="aside-title">Search</h2>
+              <div class="aside-body">
+                <form>
+                  <div class="form-group" action="search.php" autocomplete="off">
+                    <div class="input-group">
+                      <input type="text" name="q" class="form-control" placeholder="Type something ..." value="<?php echo $params['q'] ?>">
+                      <div class="input-group-btn">
+                        <button class="btn btn-primary">
+                          <i class="ion-search"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
               </div>
+            </aside>
+          </div>
+          <div class="col-md-9">
+            <div class="nav-tabs-group">
+              <ul class="nav-tabs-list">
+                <li class="active"><a href="#">All</a></li>
+              </ul>
+            </div>
+            <div class="search-result">
+              Search results for keyword "<?php echo $params['q'] ?>" found in <?php echo count($questions) ?> posts.
+            </div>
+            <div class="row">
+              <?php foreach ($questions as $key=>$value ) { ?>
+                <article class="col-md-12 article-list">
+                  <div class="inner">
+                    <figure>
+                      <a href="question.php">
+                        <img src="<?php echo $api.$value->image ?>" alt="Sample Article">
+                      </a>
+                    </figure>
+                    <div class="details">
+                      <div class="detail">
+                        <div class="category">
+                          <a href="category.php?id=<?php echo $value->category->id ?>"><?php echo $value->category->name ?></a>
+                        </div>
+                        <div class="time"><?php echo $value->created_at ?></div>
+                      </div>
+                      <h1><a href="question.php"><?php echo $value->excerpt ?></a></h1>
+                      <p>
+                      <?php echo $value->content ?>
+                      </p>
+                      <footer>
+                        <?php $like_status = in_array($value->id, $likes) ? 'active' : '' ?>
+                        <a href="#" class="love <?php echo $like_status ?>" data-questionid="<?php echo $value->id ?>"><i class="ion-android-favorite"></i> <div><?php echo $value->likes ?></div></a>
+                        <a class="btn btn-primary more" href="question.php?id=<?php echo $value->id ?>">
+                          <div>More</div>
+                          <div><i class="ion-ios-arrow-thin-right"></i></div>
+                        </a>
+                      </footer>
+                    </div>
+                  </div>
+                </article>
+              <?php } ?>
             </div>
           </div>
         </div>
@@ -240,10 +266,15 @@
     <script src="scripts/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
     <script src="scripts/easescroll/jquery.easeScroll.js"></script>
     <script src="scripts/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="scripts/icheck/icheck.min.js"></script>
     <script src="scripts/toast/jquery.toast.min.js"></script>
     <script src="js/demo.js"></script>
-    <script src="js/e-magz.js"></script>
+    <script>$("input").iCheck({
+      checkboxClass: 'icheckbox_square-red',
+      radioClass: 'iradio_square-red',
+      cursor: true
+    });</script>
     <script src="js/application.js"></script>
-    <script src="js/user.js"></script>
+    <script src="js/e-magz.js"></script>
   </body>
 </html>

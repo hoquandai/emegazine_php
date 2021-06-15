@@ -1,5 +1,6 @@
 <?php
   session_start();
+  if (!$_SESSION['user_admin']) { header("Location: index.php"); }
   require_once("api/call.php");
   $username = $_SESSION['user_name'] ? $_SESSION['user_name'] : '';
   $authenticated_data = $_SESSION['loggedin'] ? array("authenticated" => true) : array();
@@ -145,6 +146,11 @@
                   <li><a href="profile.php?id=<?php echo $_SESSION['user_id'] ?>"><i class="icon ion-person"></i> My Account</a></li>
                   <li><a href="profile_form.php?id=<?php echo $_SESSION['user_id'] ?>"><i class="icon ion-settings"></i> Update Profile</a></li>
                   <li><a href="question_form.php"><i class="icon ion-android-add-circle"></i>Add Question</a></li>
+                  <?php if ($_SESSION['user_admin'] == 'true') { ?>
+                  <li><a href="manage_users.php"><i class="icon ion-man"></i>Manage Users</a></li>
+                  <li><a href="manage_categories.php"><i class="icon ion-bookmark"></i>Manage Category</a></li>
+                  <li><a href="manage_questions.php"><i class="icon ion-document-text"></i>Manage Questions</a></li>
+                  <?php } ?>
                   <li class="divider"></li>
                   <li><a href="logout.php"><i class="icon ion-log-out"></i> Logout</a></li>
                 </ul>

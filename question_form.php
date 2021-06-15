@@ -159,6 +159,11 @@
                   <li><a href="profile.php?id=<?php echo $_SESSION['user_id'] ?>"><i class="icon ion-person"></i> My Account</a></li>
                   <li><a href="profile_form.php?id=<?php echo $_SESSION['user_id'] ?>"><i class="icon ion-settings"></i> Update Profile</a></li>
                   <li><a href="question_form.php"><i class="icon ion-android-add-circle"></i>Add Question</a></li>
+                  <?php if ($_SESSION['user_admin'] == 'true') { ?>
+                  <li><a href="manage_users.php"><i class="icon ion-man"></i>Manage Users</a></li>
+                  <li><a href="manage_categories.php"><i class="icon ion-bookmark"></i>Manage Category</a></li>
+                  <li><a href="manage_questions.php"><i class="icon ion-document-text"></i>Manage Questions</a></li>
+                  <?php } ?>
                   <li class="divider"></li>
                   <li><a href="logout.php"><i class="icon ion-log-out"></i> Logout</a></li>
                 </ul>
@@ -176,9 +181,9 @@
           <div class="col-md-12">
             <ol class="breadcrumb">
               <li><a href="questions.php">Questions</a></li>
-              <li class="active">Create</li>
+              <li class="active"><?php echo $title ?></li>
             </ol>
-            <h1 class="page-title">Create</h1>
+            <h1 class="page-title"><?php echo $title ?></h1>
             <p class="page-subtitle">Give me your question</p>
             <div class="line thin"></div>
             <div class="page-description">
