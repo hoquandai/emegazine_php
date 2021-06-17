@@ -1417,6 +1417,48 @@ article {
   }
 }
 
+.report {
+  color: #989898;
+  float: left;
+  margin-top: 10px;
+  position: relative;
+  i {
+    display: inline-block;
+    float: left;
+    margin-top: 1px;
+  }
+  i:before {
+    font-size: 28px;
+  }
+  div {
+    display: inline-block;
+    margin-left: 60px;
+    font-size: 14px;
+    margin-top: 5px;
+    margin-left: 5px;
+  }
+  &.active {
+    color: color($colors, primary);
+  }
+  i.animated {
+    animation-name: report;
+    -webkit-animation-name: report;
+    -moz-animation-name: report;
+    -o-animation-name: report;
+    animation-fill-mode: backwards;
+    -moz-animation-fill-mode: backwards;
+    -o-animation-fill-mode: backwards;
+    -webkit-animation-fill-mode: backwards;
+    animation-duration: .5s;
+    -moz-animation-duration: .5s;
+    -webkit-animation-duration: .5s;
+    -o-animation-duration: .5s;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+}
+
 @keyframes love {
   0% {
     top: 0px;
@@ -1527,6 +1569,115 @@ article {
   }
 }
 
+@keyframes report {
+  0% {
+    top: 0px;
+    transform: rotate(0);
+    -moz-transform: rotate(0);
+    -webkit-transform: rotate(0);
+    -o-transform: rotate(0);
+  }
+
+  20% {
+    top: -10px;
+    transform: rotate(20deg);
+    -moz-transform: rotate(20deg);
+    -webkit-transform: rotate(20deg);
+    -o-transform: rotate(20deg);
+    opacity: .8;
+  }
+
+  40% {
+    top: -20px;
+    transform: rotate(-20deg);
+    -moz-transform: rotate(-20deg);
+    -webkit-transform: rotate(-20deg);
+    -o-transform: rotate(-20deg);
+    opacity: .6;
+  }
+
+  60% {
+    top: -30px;
+    transform: rotate(10deg);
+    -moz-transform: rotate(10deg);
+    -webkit-transform: rotate(10deg);
+    -o-transform: rotate(10deg);
+    opacity: .4;
+  }
+
+  80% {
+    top: -40px;
+    transform: rotate(-10deg);
+    -moz-transform: rotate(-10deg);
+    -webkit-transform: rotate(-10deg);
+    -o-transform: rotate(-10deg);
+    opacity: .2;
+  }
+
+  100% {
+    top: -50px;
+    transform: rotate(0);
+    -moz-transform: rotate(0);
+    -webkit-transform: rotate(0);
+    -o-transform: rotate(0);
+    opacity: 0;
+  }
+}
+
+@-webkit-keyframes report {
+  0% {
+    top: 0px;
+    transform: rotate(0);
+    -moz-transform: rotate(0);
+    -webkit-transform: rotate(0);
+    -o-transform: rotate(0);
+  }
+
+  20% {
+    top: -10px;
+    transform: rotate(20deg);
+    -moz-transform: rotate(20deg);
+    -webkit-transform: rotate(20deg);
+    -o-transform: rotate(20deg);
+    opacity: .8;
+  }
+
+  40% {
+    top: -20px;
+    transform: rotate(-20deg);
+    -moz-transform: rotate(-20deg);
+    -webkit-transform: rotate(-20deg);
+    -o-transform: rotate(-20deg);
+    opacity: .6;
+  }
+
+  60% {
+    top: -30px;
+    transform: rotate(10deg);
+    -moz-transform: rotate(10deg);
+    -webkit-transform: rotate(10deg);
+    -o-transform: rotate(10deg);
+    opacity: .4;
+  }
+
+  80% {
+    top: -40px;
+    transform: rotate(-10deg);
+    -moz-transform: rotate(-10deg);
+    -webkit-transform: rotate(-10deg);
+    -o-transform: rotate(-10deg);
+    opacity: .2;
+  }
+
+  100% {
+    top: -50px;
+    transform: rotate(0);
+    -moz-transform: rotate(0);
+    -webkit-transform: rotate(0);
+    -o-transform: rotate(0);
+    opacity: 0;
+  }
+}
 
 .best-of-the-week {
   margin-top: 20px;
@@ -3246,6 +3397,28 @@ section.single {
       width: 40%;
       text-align: right;
       .love {
+        float: none;
+        border: 2px solid #989898;
+        border-radius: 30px;
+        display: inline-block;
+        padding: 3px 12px;
+        i {
+          transform: scale(.8);
+          -webkit-transform: scale(.8);
+          -moz-transform: scale(.8);
+          -o-transform: scale(.8);
+          &.animated {
+            top: 3px;
+            left: 12px;
+          }
+        }
+        &.active {
+          background-color: color($colors, primary);
+          color: #fff;
+          border-color: color($colors, primary);
+        }
+      }
+      .report {
         float: none;
         border: 2px solid #989898;
         border-radius: 30px;

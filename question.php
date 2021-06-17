@@ -254,10 +254,12 @@
                 </div>
                 <div class="col">
                   <?php $liked = $data->liked == true ? 'active' : '' ?>
+                  <?php $reported = $data->reported == true ? 'active' : '' ?>
                   <a href="#" class="love <?php echo $liked ?>" data-questionid="<?php echo $data->id ?>"><i class="ion-android-favorite"></i> <div><?php echo $data->likes ?></div></a>
                   <?php if($data->creator->id == $_SESSION['user_id']) { ?>
                     <a href="question_form.php?id=<?php echo $data->id ?>" class="edit-question" data-questionid="<?php echo $data->id ?>"><i class="icon ion-edit"></i></a>
                   <?php } ?>
+                    <a href="#" class="report <?php echo $reported ?>" data-questionid="<?php echo $data->id ?>"><i class="ion-flag"></i> <div><?php echo $data->reports ?></div></a>
                 </div>
               </footer>
             </article>

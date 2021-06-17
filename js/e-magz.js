@@ -147,6 +147,73 @@ $(function(){
 		});
 	}
 
+	// report
+	var report = function() {
+		$(".report").each(function(){
+			$(this).find("div").html($.number($(this).find("div").html()));
+			$(this).click(function() {
+				var token = $('#user_token').val();
+				if (!token) {
+					window.location.href = 'login.php'
+				}
+				var question_id = $(this).data('questionid');
+				var countNow = $(this).find("div").html().replace(',', '');
+				if(!$(this).hasClass("active")) {
+					$(this).find(".animated").remove();
+					$(this).addClass("active");
+					$(this).find("i").removeClass("ion-android-favorite-outline");
+					$(this).find("i").addClass("ion-android-favorite");
+					$(this).find("div").html(parseInt(countNow) + 1);
+					$(this).find("div").html($.number($(this).find("div").html()));
+					$(this).append($(this).find("i").clone().addClass("animated"));
+					$(this).find("i.animated").on("animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd", function(e){
+						$(this).remove();
+					  $(this).off(e);
+					});
+					$.ajax({
+				    headers: { "Authorization": "Token " + token },
+				    method: 'POST',
+				    url: `${api_host}/reports`,
+				    data: {
+				    	question_id: question_id
+				    },
+				    success: function(response) {
+				      console.log(response)
+				     	console.log(response.data)
+				    },
+				    error: function(error) {
+				      console.log(error.responseJSON);
+				    }
+				  });
+				}else{
+					$(this).find(".animated").remove();
+					$(this).removeClass("active");
+					$(this).find("i").addClass("ion-android-favorite");
+					// $(this).find("i").removeClass("ion-android-favorite");
+					$(this).find("div").html(parseInt(countNow) - 1);
+					$(this).find("div").html($.number($(this).find("div").html()));
+
+					$.ajax({
+				    headers: { "Authorization": "Token " + token },
+				    method: 'DELETE',
+				    url: `${api_host}/reports/remove`,
+				    data: {
+				    	question_id: question_id
+				    },
+				    success: function(response) {
+				      console.log(response)
+				     	console.log(response.data)
+				    },
+				    error: function(error) {
+				      console.log(error.responseJSON);
+				    }
+				  });
+				}
+				return false;
+			});
+		});
+	}
+
 
 	// newsletter
 	var newsletter = function() {
@@ -715,6 +782,8 @@ $(function(){
 	stickyHeader();
 
 	love();
+
+	report();
 
 	newsletter();
 

@@ -63,7 +63,7 @@ $('#user-form #btn-submit').on('click', function() {
   form_data.append('user[is_admin]', user_admin);
   form_data.append('user[password]', user_password);
   form_data.append('user[email]', user_email);
-  form_data.append('user[avatar]', user_avatar);
+  if (user_avatar) { form_data.append('user[avatar]', user_avatar); }
   $.ajax({
     method: 'PUT',
     url: `${api_host}/user`,
@@ -75,8 +75,11 @@ $('#user-form #btn-submit').on('click', function() {
     success: function(response) {
       console.log(response.user);
       if (user_for_admin) {
-        if (current_user_id == user_id) { $.post('setsessionvariable.php', response.user); }
-        window.location.href = `manage_users.php`
+        if (current_user_id == user_id) {
+          window.location.href = `logout.php`
+        } else {
+          window.location.href = `manage_users.php`
+        }
       } else {
         $.post('setsessionvariable.php', response.user);
         window.location.href = `profile.php?id=${response.user.id}`

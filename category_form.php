@@ -1,6 +1,6 @@
 <?php
   session_start();
-  if (!$_SESSION['user_admin']) { header("Location: index.php"); }
+  if ($_SESSION['user_admin'] == 'false') { header("Location: index.php"); }
   require_once("api/call.php");
   $cates = json_decode(CallAPI('GET', '/categories'))->data;
   $username = $_SESSION['user_name'] ? $_SESSION['user_name'] : '';

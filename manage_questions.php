@@ -1,11 +1,12 @@
 <?php
   session_start();
-  if (!$_SESSION['user_admin']) { header("Location: index.php"); }
+  if ($_SESSION['user_admin'] == 'false') { header("Location: index.php"); }
   require_once("api/call.php");
   $username = $_SESSION['user_name'] ? $_SESSION['user_name'] : '';
   $authenticated_data = $_SESSION['loggedin'] ? array("authenticated" => true) : array();
   $categories = json_decode(CallAPI('GET', '/categories'))->data;
-  $questions = json_decode(CallAPI('GET', '/questions'))->data;
+  $questions = json_decode(CallAPI('GET', '/questions/admin'))->data;
+  $cate_groups = json_decode(CallAPI('GET', '/categories/groups'))->data;
 ?>
 <!DOCTYPE html>
 <html>
@@ -170,7 +171,7 @@
               <div class="featured-author-inner">
                 <div class="featured-author-cover" style="background-image: url('images/news/img15.jpg');">
                   <div class="badges">
-                    <div class="badge-item"><a href="category_form.php"><i class="icon ion-android-add-circle"></i>Add Category</a></div>
+                    <div class="badge-item"><a href="question_form.php"><i class="icon ion-android-add-circle"></i>Add Question</a></div>
                   </div>
                 </div>
                 <div class="featured-author-body">

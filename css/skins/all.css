@@ -84,6 +84,12 @@
 .skin-purple .love.active {
   color: #8e44ad;
 }
+.skin-purple .report {
+  color: #989898;
+}
+.skin-purple .report.active {
+  color: #8e44ad;
+}
 .skin-purple .best-of-the-week .article h2 a:hover {
   color: #8e44ad;
 }
@@ -308,6 +314,11 @@
   color: #fff;
   border-color: #8e44ad;
 }
+.skin-purple section.single article.main-article footer .col:last-child .report.active {
+  background-color: #8e44ad;
+  color: #fff;
+  border-color: #8e44ad;
+}
 .skin-purple section.single footer .tags li a:hover {
   color: #8e44ad;
 }
@@ -430,6 +441,12 @@
   color: #989898;
 }
 .skin-blue .love.active {
+  color: #626EEF;
+}
+.skin-blue .report {
+  color: #989898;
+}
+.skin-blue .report.active {
   color: #626EEF;
 }
 .skin-blue .best-of-the-week .article h2 a:hover {
@@ -656,6 +673,11 @@
   color: #fff;
   border-color: #626EEF;
 }
+.skin-blue section.single article.main-article footer .col:last-child .report.active {
+  background-color: #626EEF;
+  color: #fff;
+  border-color: #626EEF;
+}
 .skin-blue section.single footer .tags li a:hover {
   color: #626EEF;
 }
@@ -778,6 +800,12 @@
   color: #989898;
 }
 .skin-orange .love.active {
+  color: #FC624D;
+}
+.skin-orange .report {
+  color: #989898;
+}
+.skin-orange .report.active {
   color: #FC624D;
 }
 .skin-orange .best-of-the-week .article h2 a:hover {
@@ -1000,6 +1028,11 @@
   color: #FC624D;
 }
 .skin-orange section.single article.main-article footer .col:last-child .love.active {
+  background-color: #FC624D;
+  color: #fff;
+  border-color: #FC624D;
+}
+.skin-orange section.single article.main-article footer .col:last-child .report.active {
   background-color: #FC624D;
   color: #fff;
   border-color: #FC624D;

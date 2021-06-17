@@ -1551,6 +1551,48 @@ article footer .btn-primary:focus {
   top: 0;
 }
 
+.report {
+  color: #989898;
+  float: left;
+  margin-top: 10px;
+  position: relative;
+}
+.report i {
+  display: inline-block;
+  float: left;
+  margin-top: 1px;
+}
+.report i:before {
+  font-size: 28px;
+}
+.report div {
+  display: inline-block;
+  margin-left: 60px;
+  font-size: 14px;
+  margin-top: 5px;
+  margin-left: 5px;
+}
+.report.active {
+  color: #F73F52;
+}
+.report i.animated {
+  animation-name: report;
+  -webkit-animation-name: report;
+  -moz-animation-name: report;
+  -o-animation-name: report;
+  animation-fill-mode: backwards;
+  -moz-animation-fill-mode: backwards;
+  -o-animation-fill-mode: backwards;
+  -webkit-animation-fill-mode: backwards;
+  animation-duration: .5s;
+  -moz-animation-duration: .5s;
+  -webkit-animation-duration: .5s;
+  -o-animation-duration: .5s;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
 @keyframes love {
   0% {
     top: 0px;
@@ -1601,6 +1643,104 @@ article footer .btn-primary:focus {
   }
 }
 @-webkit-keyframes love {
+  0% {
+    top: 0px;
+    transform: rotate(0);
+    -moz-transform: rotate(0);
+    -webkit-transform: rotate(0);
+    -o-transform: rotate(0);
+  }
+  20% {
+    top: -10px;
+    transform: rotate(20deg);
+    -moz-transform: rotate(20deg);
+    -webkit-transform: rotate(20deg);
+    -o-transform: rotate(20deg);
+    opacity: .8;
+  }
+  40% {
+    top: -20px;
+    transform: rotate(-20deg);
+    -moz-transform: rotate(-20deg);
+    -webkit-transform: rotate(-20deg);
+    -o-transform: rotate(-20deg);
+    opacity: .6;
+  }
+  60% {
+    top: -30px;
+    transform: rotate(10deg);
+    -moz-transform: rotate(10deg);
+    -webkit-transform: rotate(10deg);
+    -o-transform: rotate(10deg);
+    opacity: .4;
+  }
+  80% {
+    top: -40px;
+    transform: rotate(-10deg);
+    -moz-transform: rotate(-10deg);
+    -webkit-transform: rotate(-10deg);
+    -o-transform: rotate(-10deg);
+    opacity: .2;
+  }
+  100% {
+    top: -50px;
+    transform: rotate(0);
+    -moz-transform: rotate(0);
+    -webkit-transform: rotate(0);
+    -o-transform: rotate(0);
+    opacity: 0;
+  }
+}
+@keyframes report {
+  0% {
+    top: 0px;
+    transform: rotate(0);
+    -moz-transform: rotate(0);
+    -webkit-transform: rotate(0);
+    -o-transform: rotate(0);
+  }
+  20% {
+    top: -10px;
+    transform: rotate(20deg);
+    -moz-transform: rotate(20deg);
+    -webkit-transform: rotate(20deg);
+    -o-transform: rotate(20deg);
+    opacity: .8;
+  }
+  40% {
+    top: -20px;
+    transform: rotate(-20deg);
+    -moz-transform: rotate(-20deg);
+    -webkit-transform: rotate(-20deg);
+    -o-transform: rotate(-20deg);
+    opacity: .6;
+  }
+  60% {
+    top: -30px;
+    transform: rotate(10deg);
+    -moz-transform: rotate(10deg);
+    -webkit-transform: rotate(10deg);
+    -o-transform: rotate(10deg);
+    opacity: .4;
+  }
+  80% {
+    top: -40px;
+    transform: rotate(-10deg);
+    -moz-transform: rotate(-10deg);
+    -webkit-transform: rotate(-10deg);
+    -o-transform: rotate(-10deg);
+    opacity: .2;
+  }
+  100% {
+    top: -50px;
+    transform: rotate(0);
+    -moz-transform: rotate(0);
+    -webkit-transform: rotate(0);
+    -o-transform: rotate(0);
+    opacity: 0;
+  }
+}
+@-webkit-keyframes report {
   0% {
     top: 0px;
     transform: rotate(0);
@@ -3308,6 +3448,13 @@ section.single footer .col:last-child .love {
   display: inline-block;
   padding: 3px 12px;
 }
+section.single footer .col:last-child .report {
+  float: none;
+  border: 2px solid #989898;
+  border-radius: 30px;
+  display: inline-block;
+  padding: 3px 12px;
+}
 section.single footer .col:last-child .love i {
   transform: scale(0.8);
   -webkit-transform: scale(0.8);
@@ -3319,6 +3466,21 @@ section.single footer .col:last-child .love i.animated {
   left: 12px;
 }
 section.single footer .col:last-child .love.active {
+  background-color: #F73F52;
+  color: #fff;
+  border-color: #F73F52;
+}
+section.single footer .col:last-child .report i {
+  transform: scale(0.8);
+  -webkit-transform: scale(0.8);
+  -moz-transform: scale(0.8);
+  -o-transform: scale(0.8);
+}
+section.single footer .col:last-child .report i.animated {
+  top: 3px;
+  left: 12px;
+}
+section.single footer .col:last-child .report.active {
   background-color: #F73F52;
   color: #fff;
   border-color: #F73F52;

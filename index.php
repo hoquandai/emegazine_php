@@ -221,7 +221,7 @@
 														<div class="time"><?php echo $value->created_at ?></div>
 														<div class="category"><a href="category.php?id=<?php echo $value->category->id ?>"><?php echo $value->category->name ?></a></div>
 													</div>
-													<h2><a href="qeustion.php?id=<?php echo $value->id ?>"><?php echo $value->excerpt ?></a></h2>
+													<h2><a href="question.php?id=<?php echo $value->id ?>"><?php echo $value->excerpt ?></a></h2>
 													<p><?php echo $value->content ?></p>
 													<footer>
 														<?php $like_status = in_array($value->id, $latest_likes) ? 'active' : '' ?>

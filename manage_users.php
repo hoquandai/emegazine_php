@@ -1,6 +1,6 @@
 <?php
   session_start();
-  if (!$_SESSION['user_admin']) { header("Location: index.php"); }
+  if ($_SESSION['user_admin'] == 'false') { header("Location: index.php"); }
   require_once("api/call.php");
   $username = $_SESSION['user_name'] ? $_SESSION['user_name'] : '';
   $authenticated_data = $_SESSION['loggedin'] ? array("authenticated" => true) : array();

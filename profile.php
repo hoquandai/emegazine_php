@@ -203,7 +203,7 @@
                       </a>
                     </div>
                     <div class="item">
-                      <a href="profile_form.php" class="<?php echo $update_state ?>">
+                      <a href="profile_form.php?id=<?php echo $_SESSION['user_id'] ?>" class="<?php echo $update_state ?>">
                         <div class="icon">
                           <div>Update</div>
                           <i class="ion-chevron-right"></i>
@@ -230,7 +230,7 @@
                                   <div class="time"><?php echo $value->created_at ?></div>
                                   <div class="category"><a href="category.php?id=<?php echo $value->category->id ?>"><?php echo $value->category->name ?></a></div>
                               </div>
-                              <h2><a href="qeustion.php?id=<?php echo $value->id ?>"><?php echo $value->excerpt ?></a></h2>
+                              <h2><a href="question.php?id=<?php echo $value->id ?>"><?php echo $value->excerpt ?></a></h2>
                               <p><?php echo $value->content ?></p>
                             </div>
                           </div>

@@ -3,7 +3,7 @@
   if (!$_SESSION['loggedin']) { header("Location: index.php"); }
   parse_str($_SERVER['QUERY_STRING'], $params);
   $admin_update = $params['admin'];
-  if (!$_SESSION['user_admin'] && $_SESSION['user_id'] != $params['id']) { header("Location: index.php"); }
+  if ($_SESSION['user_admin'] == 'false' && $_SESSION['user_id'] != $params['id']) { header("Location: index.php"); }
   require_once("api/call.php");
   $username = $_SESSION['user_name'] ? $_SESSION['user_name'] : '';
   $cates = CallAPI('GET', '/categories');
