@@ -52,7 +52,7 @@ $('#user-form #btn-submit').on('click', function() {
   let user_id = $('#user-form .id').val();
   let current_user_id = $('#user-form .current_id').val();
   let user_name = $('#user-form .name').val();
-  let user_admin = $('#user-form .is-admin')[0].checked;
+  let user_admin = $('#user-form .is-admin').length > 0 ? $('#user-form .is-admin')[0].checked : false;
   let user_password = $('#user-form .password').val();
   let user_email = $('#user-form .email').val();
   let user_for_admin = $('#user-form .admin_update').val();

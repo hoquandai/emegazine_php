@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-md-3 col-sm-12">
           <div class="brand">
-            <a href="index.html">
+            <a href="index.php">
               <img src="images/logo.png" alt="Magz Logo">
             </a>
           </div>            
@@ -82,7 +82,7 @@
           <li class="dropdown magz-dropdown">
             <a href="category.html">Pages <i class="ion-ios-arrow-right"></i></a>
             <ul class="dropdown-menu">
-              <li><a href="index.html">Home</a></li>
+              <li><a href="index.php">Home</a></li>
               <li class="dropdown magz-dropdown">
                 <a href="#">Authentication <i class="ion-ios-arrow-right"></i></a>
                 <ul class="dropdown-menu">

@@ -1,6 +1,7 @@
 <?php
   session_start();
   require_once("api/call.php");
+  $api = 'http://localhost:3000';
   $username = $_SESSION['user_name'] ? $_SESSION['user_name'] : '';
   $authenticated_data = $_SESSION['loggedin'] ? array("authenticated" => true) : array();
   parse_str($_SERVER['QUERY_STRING'], $params);
@@ -18,15 +19,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="description" content="Magz is a HTML5 & CSS3 magazine template is based on Bootstrap 3.">
-    <meta name="author" content="Kodinger">
-    <meta name="keyword" content="magz, html5, css3, template, magazine template">
+    <meta name="description" content="eSocial">
+    <meta name="author" content="DaiHo">
+    <meta name="keyword" content="eSocial">
     <!-- Shareable -->
-    <meta property="og:title" content="HTML5 & CSS3 magazine template is based on Bootstrap 3" />
-    <meta property="og:type" content="article" />
-    <meta property="og:url" content="http://github.com/nauvalazhar/Magz" />
-    <meta property="og:image" content="https://raw.githubusercontent.com/nauvalazhar/Magz/master/images/preview.png" />
-    <title>Magz &mdash; Responsive HTML5 &amp; CSS3 Magazine Template</title>
+    <title>eSocial</title>
     <!-- Bootstrap -->
     <link rel="stylesheet" href="scripts/bootstrap/bootstrap.min.css">
     <!-- IonIcons -->
@@ -52,7 +49,7 @@
           <div class="row">
             <div class="col-md-3 col-sm-12">
               <div class="brand">
-                <a href="index.html">
+                <a href="index.php">
                   <img src="images/logo.png" alt="Magz Logo">
                 </a>
               </div>            
@@ -222,7 +219,7 @@
                           <div class="inner">
                             <figure>
                               <a href="question.php?id=<?php echo $value->id ?>">
-                                <img src="images/news/img03.jpg" alt="Sample Article">
+                                <img src="<?php echo $api.$value->image ?>" alt="Sample Article">
                               </a>
                             </figure>
                             <div class="padding">
@@ -231,7 +228,7 @@
                                   <div class="category"><a href="category.php?id=<?php echo $value->category->id ?>"><?php echo $value->category->name ?></a></div>
                               </div>
                               <h2><a href="question.php?id=<?php echo $value->id ?>"><?php echo $value->excerpt ?></a></h2>
-                              <p><?php echo $value->content ?></p>
+                              <p><?php echo strlen($value->content) > 110 ? substr($value->content,0,110)."..." : $value->content ?></p>
                             </div>
                           </div>
                         </article>

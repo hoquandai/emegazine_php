@@ -29,15 +29,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="description" content="Magz is a HTML5 & CSS3 magazine template is based on Bootstrap 3.">
-    <meta name="author" content="Kodinger">
-    <meta name="keyword" content="magz, html5, css3, template, magazine template">
+    <meta name="description" content="eSocial">
+    <meta name="author" content="DaiHo">
+    <meta name="keyword" content="eSocial">
     <!-- Shareable -->
-    <meta property="og:title" content="HTML5 & CSS3 magazine template is based on Bootstrap 3" />
-    <meta property="og:type" content="article" />
-    <meta property="og:url" content="http://github.com/nauvalazhar/Magz" />
-    <meta property="og:image" content="https://raw.githubusercontent.com/nauvalazhar/Magz/master/images/preview.png" />
-    <title>Magz &mdash; Responsive HTML5 &amp; CSS3 Magazine Template</title>
+    <title>eSocial</title>
     <!-- Bootstrap -->
     <link rel="stylesheet" href="scripts/bootstrap/bootstrap.min.css">
     <!-- IonIcons -->
@@ -64,7 +60,7 @@
           <div class="row">
             <div class="col-md-3 col-sm-12">
               <div class="brand">
-                <a href="index.html">
+                <a href="index.php">
                   <img src="images/logo.png" alt="Magz Logo">
                 </a>
               </div>            
@@ -139,6 +135,7 @@
               <li class="for-tablet"><a href="login.php">Login</a></li>
               <li class="for-tablet"><a href="register.php">Register</a></li>
               <li><a href="index.php">Home</a></li>
+              <li><a href="tags.php">Tags</a></li>
               <li class="dropdown magz-dropdown magz-dropdown-megamenu"><a href="#">Category <i class="ion-ios-arrow-right"></i></a>
                 <div class="dropdown-menu megamenu">
                   <div class="megamenu-inner">
@@ -161,6 +158,12 @@
                 <ul class="dropdown-menu">
                   <li><a href="profile.php?id=<?php echo $_SESSION['user_id'] ?>"><i class="icon ion-person"></i> My Account</a></li>
                   <li><a href="profile_form.php?id=<?php echo $_SESSION['user_id'] ?>"><i class="icon ion-settings"></i> Update Profile</a></li>
+                  <li><a href="question_form.php"><i class="icon ion-android-add-circle"></i>Add Question</a></li>
+                  <?php if ($_SESSION['user_admin'] == 'true') { ?>
+                  <li><a href="manage_users.php"><i class="icon ion-man"></i>Manage Users</a></li>
+                  <li><a href="manage_categories.php"><i class="icon ion-bookmark"></i>Manage Category</a></li>
+                  <li><a href="manage_questions.php"><i class="icon ion-document-text"></i>Manage Questions</a></li>
+                  <?php } ?>
                   <li class="divider"></li>
                   <li><a href="logout.php"><i class="icon ion-log-out"></i> Logout</a></li>
                 </ul>
@@ -197,7 +200,7 @@
                             <div class="category"><a href="category.php?id=<?php echo $value->category->id ?>"><?php echo $value->category->name ?></a></div>
                           </div>
                           <h2><a href="question.php?id=<?php echo $value->id ?>"><?php echo $value->excerpt ?></a></h2>
-                          <p><?php echo $value->content ?></p>
+                          <p><?php echo strlen($value->content) > 110 ? substr($value->content,0,110)."..." : $value->content ?></p>
                           <footer>
                             <?php $like_status = in_array($value->id, $latest_likes) ? 'active' : '' ?>
                             <a href="#" class="love <?php echo $like_status  ?>" data-questionid="<?php echo $value->id ?>"><i class="ion-android-favorite"></i> <div><?php echo $value->likes ?></div></a>

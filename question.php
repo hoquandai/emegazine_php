@@ -19,15 +19,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="description" content="Magz is a HTML5 & CSS3 magazine template is based on Bootstrap 3.">
-    <meta name="author" content="Kodinger">
-    <meta name="keyword" content="magz, html5, css3, template, magazine template">
+    <meta name="description" content="eSocial">
+    <meta name="author" content="DaiHo">
+    <meta name="keyword" content="eSocial">
     <!-- Shareable -->
-    <meta property="og:title" content="HTML5 & CSS3 magazine template is based on Bootstrap 3" />
-    <meta property="og:type" content="article" />
-    <meta property="og:url" content="http://github.com/nauvalazhar/Magz" />
-    <meta property="og:image" content="https://raw.githubusercontent.com/nauvalazhar/Magz/master/images/preview.png" />
-    <title>Magz &mdash; Responsive HTML5 &amp; CSS3 Magazine Template</title>
+    <title>eSocial</title>
     <!-- Bootstrap -->
     <link rel="stylesheet" href="scripts/bootstrap/bootstrap.min.css">
     <!-- IonIcons -->
@@ -54,7 +50,7 @@
           <div class="row">
             <div class="col-md-3 col-sm-12">
               <div class="brand">
-                <a href="index.html">
+                <a href="index.php">
                   <img src="images/logo.png" alt="Magz Logo">
                 </a>
               </div>            
@@ -187,7 +183,7 @@
                     <div class="details">
                       <h1><a href="question.php?id=<?php echo $recent->id ?>"><?php echo $recent->excerpt ?></a></h1>
                       <p>
-                      <?php echo $recent->content ?>
+                      <?php echo strlen($recent->content) > 110 ? substr($recent->content,0,110)."..." : $recent->content ?>
                       </p>
                       <div class="detail">
                         <div class="time"><?php echo $recent->created_at ?></div>
