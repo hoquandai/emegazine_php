@@ -6,7 +6,10 @@
   $username = $_SESSION['user_name'] ? $_SESSION['user_name'] : '';
   $authenticated_data = $_SESSION['loggedin'] ? array("authenticated" => true) : array();
   parse_str($_SERVER['QUERY_STRING'], $params);
-  $data = json_decode(CallAPI('GET', '/questions/'.$params['id'], $_SESSION['loggedin'], $authenticated_data))->data;
+  $question = json_decode(CallAPI('GET', '/questions/'.$params['id'], $_SESSION['loggedin'], $authenticated_data));
+  $data = $question->data;
+  $status = $question->status;
+  if ($status == '404') { header("Location: 404.php"); }
   $cates = CallAPI('GET', '/categories');
   $cate_groups = json_decode(CallAPI('GET', '/categories/groups'))->data;
   $latest_data = json_decode(CallAPI('GET', '/questions/latest', $_SESSION['loggedin'], $authenticated_data))->data;

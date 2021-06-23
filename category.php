@@ -5,7 +5,6 @@
   $authenticated_data = $_SESSION['loggedin'] ? array("authenticated" => true) : array();
   parse_str($_SERVER['QUERY_STRING'], $params);
   $payload = array_merge($authenticated_data, array("id" => $params['id']));
-  $cates = CallAPI('GET', '/categories');
   $latest_data = json_decode(CallAPI('GET', '/questions/category', $_SESSION['loggedin'], $payload))->data;
   $latest_questions = $latest_data->questions;
   $latest_likes = $latest_data->likes;
