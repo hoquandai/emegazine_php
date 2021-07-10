@@ -63,7 +63,7 @@
               </div>            
             </div>
             <div class="col-md-6 col-sm-12">
-              <form class="search" autocomplete="off">
+              <form class="search" action="search.php" autocomplete="off">
                 <div class="form-group">
                   <div class="input-group">
                     <input type="text" name="q" class="form-control" placeholder="Type something here">                 
